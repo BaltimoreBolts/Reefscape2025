@@ -4,9 +4,11 @@
 
 package frc.robot.subsystems.drive;
 
+import choreo.trajectory.SwerveSample;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -54,11 +56,34 @@ public class DriveSubsystem extends SubsystemBase {
           m_rearLeft.getPosition(),
           m_rearRight.getPosition()
       });
+  
+  /** ChoreoLib implmenetation PID controllers */
+    private final PIDController xController = new PIDController(10.0, 0.0, 0.0);
+    private final PIDController yController = new PIDController(10.0, 0.0, 0.0);
+    private final PIDController headingController = new PIDController(7.5, 0.0, 0.0);
+
+
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
     // Usage reporting for MAXSwerve template
     HAL.report(tResourceType.kResourceType_RobotDrive, tInstances.kRobotDriveSwerve_MaxSwerve);
+    headingController.enableContinuousInput(-Math.PI, Math.PI);
+  }
+
+  public void followTrajectory(SwerveSample sample) {
+        // Get the current pose of the robot
+        Pose2d pose = getPose();
+
+        // Generate the next speeds for the robot
+        ChassisSpeeds speeds = new ChassisSpeeds(
+            sample.vx + xController.calculate(pose.getX(), sample.x),
+            sample.vy + yController.calculate(pose.getY(), sample.y),
+            sample.omega + headingController.calculate(pose.getRotation().getRadians(), sample.heading)
+        );
+
+        // Apply the generated speeds 
+        // driveFieldRelative(speeds); <-- reference error(?)
   }
 
   @Override
