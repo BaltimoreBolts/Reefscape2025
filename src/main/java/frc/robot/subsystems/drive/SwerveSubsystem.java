@@ -1,4 +1,8 @@
-package frc.robot.subsystems.swervedrive;
+// Copyright (c) FIRST and other WPILib contributors.
+// Open Source Software; you can modify and/or share it under the terms of
+// the WPILib BSD license file in the root directory of this project.
+
+package frc.robot.subsystems.drive;
 
 import static edu.wpi.first.units.Units.Meter;
 
@@ -32,7 +36,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
-import frc.robot.subsystems.swervedrive.Vision.Cameras;
+//import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -41,7 +45,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
-import org.photonvision.targeting.PhotonPipelineResult;
+//import org.photonvision.targeting.PhotonPipelineResult;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -67,7 +71,10 @@ public class SwerveSubsystem extends SubsystemBase
    * Enable vision odometry updates while driving.
    */
   private final boolean             visionDriveTest     = false;
-
+  /**
+   * PhotonVision class to keep an accurate odometry.
+   */
+  //private Vision vision;
 
   /**
    * Initialize {@link SwerveDrive} with the directory provided.
@@ -96,16 +103,16 @@ public class SwerveSubsystem extends SubsystemBase
                                                true,
                                                0.1); //Correct for skew that gets worse as angular velocity increases. Start with a coefficient of 0.1.
     swerveDrive.setModuleEncoderAutoSynchronize(false,
-                                                1); // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
+                                                1);} // Enable if you want to resynchronize your absolute encoders and motor encoders periodically when they are not moving.
 //    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the internal encoder and push the offsets onto it. Throws warning if not possible
-    if (visionDriveTest)
-    {
-      setupPhotonVision();
-      // Stop the odometry thread if we are using vision that way we can synchronize updates better.
-      swerveDrive.stopOdometryThread();
-    }
-    setupPathPlanner();
-  }
+  //   if (visionDriveTest)
+  //   {
+  //     setupPhotonVision();
+  //     // Stop the odometry thread if we are using vision that way we can synchronize updates better.
+  //     swerveDrive.stopOdometryThread();
+  //   }
+  //   setupPathPlanner();
+  // }
 
   /**
    * Construct the swerve drive.
@@ -125,9 +132,21 @@ public class SwerveSubsystem extends SubsystemBase
   /**
    * Setup the photon vision class.
    */
+  // public void setupPhotonVision()
+  // {
+  //   vision = new Vision(swerveDrive::getPose, swerveDrive.field);
+  // }
 
   @Override
-  public void periodic(){}
+  public void periodic()
+  {
+    // When vision is enabled we must manually update odometry in SwerveDrive
+    if (visionDriveTest)
+    {
+      swerveDrive.updateOdometry();
+      //vision.updatePoseEstimation(swerveDrive);
+    }
+  }
 
   @Override
   public void simulationPeriodic()
@@ -210,6 +229,24 @@ public class SwerveSubsystem extends SubsystemBase
    *
    * @return A {@link Command} which will run the alignment.
    */
+  //public Command aimAtTarget(Cameras camera)
+  // {
+
+  //   return run(() -> {
+  //     Optional<PhotonPipelineResult> resultO = camera.getBestResult();
+  //     if (resultO.isPresent())
+  //     {
+  //       var result = resultO.get();
+  //       if (result.hasTargets())
+  //       {
+  //         drive(getTargetSpeeds(0,
+  //                               0,
+  //                               Rotation2d.fromDegrees(result.getBestTarget()
+  //                                                            .getYaw()))); // Not sure if this will work, more math may be required.
+  //       }
+  //     }
+  //   });
+  // }
 
   /**
    * Get the path follower with events.
@@ -220,8 +257,7 @@ public class SwerveSubsystem extends SubsystemBase
   public Command getAutonomousCommand(String pathName)
   {
     // Create a path following command using AutoBuilder. This will also trigger event markers.
-    //TODO: add choreo implemenetations
-    return null;
+    return new PathPlannerAuto(pathName);
   }
 
   /**
@@ -230,6 +266,20 @@ public class SwerveSubsystem extends SubsystemBase
    * @param pose Target {@link Pose2d} to go to.
    * @return PathFinding command
    */
+  public Command driveToPose(Pose2d pose)
+  {
+// Create the constraints to use while pathfinding
+    PathConstraints constraints = new PathConstraints(
+        swerveDrive.getMaximumChassisVelocity(), 4.0,
+        swerveDrive.getMaximumChassisAngularVelocity(), Units.degreesToRadians(720));
+
+// Since AutoBuilder is configured, we can use it to build pathfinding commands
+    return AutoBuilder.pathfindToPose(
+        pose,
+        constraints,
+        edu.wpi.first.units.Units.MetersPerSecond.of(0) // Goal end velocity in meters/sec
+                                     );
+  }
 
   /**
    * Drive with {@link SwerveSetpointGenerator} from 254, implemented by PathPlanner.
