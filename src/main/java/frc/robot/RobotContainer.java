@@ -38,6 +38,9 @@ public class RobotContainer
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
 
+
+  
+   
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
@@ -93,11 +96,16 @@ public class RobotContainer
    */
   public RobotContainer()
   {
+    //Subsystem initialization
+    
     autoChooser = AutoBuilder.buildAutoChooser();
     SmartDashboard.putData("Auto Chooser", autoChooser);
+
     // Configure the trigger bindings
     configureBindings();
     DriverStation.silenceJoystickConnectionWarning(true);
+
+    //Named command registration for PathPlanner Autos
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
   }
 
