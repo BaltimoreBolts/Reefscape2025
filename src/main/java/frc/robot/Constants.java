@@ -48,4 +48,59 @@ public final class Constants
     public static final double RIGHT_X_DEADBAND = 0.1;
     public static final double TURN_CONSTANT    = 6;
   }
+
+  public static final class ElevatorConstants 
+  { // set values
+    public static final int kArmLeft = 8;
+    public static final boolean kMotorInverted1 = false;
+    public static final int kArmRight = 7;
+    public static final boolean kMotorInverted2 = true;
+    public static final int kMinPosition = 0;
+    public static final double kP = 6.8; //more p 
+    public static final double kI = 0.0;//003;
+    public static final double kIz = 0;
+    public static final double kD = 6.0; //change as needed
+    public static final double kFF = 0.07;
+    public static final double kSpeedLimitFactor = 0.5;
+    public static final double kToleranceRotations = 0.2;
+    public static final double kArmSpeedModifier = 0.25;
+
+    public enum ElevatorState {
+      ZERO(0.0),
+      RESTING(17.0),
+      SCORE_PASS(5.5),
+      SCORE_L4(17.2), 
+      SCORE_SPEAKER(4.4),
+      SCORE_SPEAKER_AUTO(7.5),
+      SCORE_SPEAKER_AUTO_2(6.3);//5.4);
+
+      final double position;
+
+      ElevatorState(double position) {
+        this.position = position;
+      }
+
+      public double getPosition() {
+        return position;
+      }
+    }
+  }
+  public static final class ShooterConstants {
+    // set ports
+    public static final int kIntakePort = 9;
+    public static final int kShooterRightPort = 5;
+    public static final int kShooterLeftPort = 6;
+
+    // set speed?
+    public static final double kIntakeSpeed = 0.8;
+    public static final double kShooterSpeakerSpeed = 1.0;
+    public static final double kShooterAmpSpeed = 0.6;
+
+    public enum ScoringTarget {
+      L4,
+      PASS,
+      SPEAKER
+    }
+  }
+
 }
