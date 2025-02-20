@@ -20,12 +20,14 @@ public class ScoreCommand extends InstantCommand {
 
   @Override public void execute() {
       switch (shooterSubsystem.getScoringTarget()) {
+      case L2:
+        CommandScheduler.getInstance().schedule(new ScoreL2Command(elevatorSubsystem, shooterSubsystem));
+        break;
+      case L3:
+        CommandScheduler.getInstance().schedule(new ScoreL3Command(elevatorSubsystem, shooterSubsystem));
+        break;
       case L4:
         CommandScheduler.getInstance().schedule(new ScoreL4Command(elevatorSubsystem, shooterSubsystem));
-        break;
-
-      case SPEAKER:
-        CommandScheduler.getInstance().schedule(new ScoreSpeakerCommand(elevatorSubsystem, shooterSubsystem, ElevatorState.SCORE_SPEAKER_AUTO_2));
         break;
     }
   }
