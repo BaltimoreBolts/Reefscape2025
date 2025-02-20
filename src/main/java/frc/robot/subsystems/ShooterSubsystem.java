@@ -68,8 +68,9 @@ public class ShooterSubsystem extends SubsystemBase {
     setSpeed(0);
   }
   public void printTarget() {
-    SmartDashboard.putBoolean("targetAmp", scoringTarget == ScoringTarget.L4);
-    SmartDashboard.putBoolean("targetSpeaker", scoringTarget == ScoringTarget.SPEAKER);
+    SmartDashboard.putBoolean("targetL2", scoringTarget == ScoringTarget.L2);
+    SmartDashboard.putBoolean("targetL3", scoringTarget == ScoringTarget.L3);
+    SmartDashboard.putBoolean("targetL4", scoringTarget == ScoringTarget.L4);
   }
   public void periodic() {
     printTarget();
