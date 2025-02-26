@@ -14,11 +14,12 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ElevatorConstants.ElevatorState;
+import frc.robot.Constants.OperatorConstants;
 //import frc.robot.Constants.ControllerConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
-  private final SparkMax m_motor1 = new SparkMax(ElevatorConstants.kArmLeft, MotorType.kBrushless);
-  private final SparkMax m_motor2 = new SparkMax(ElevatorConstants.kArmRight, MotorType.kBrushless);
+  private final SparkMax m_motor1 = new SparkMax(ElevatorConstants.kElevatorLeft, MotorType.kBrushless);
+  private final SparkMax m_motor2 = new SparkMax(ElevatorConstants.kElevatorRight, MotorType.kBrushless);
   private final RelativeEncoder m_encoder = m_motor1.getEncoder();
   private final SparkClosedLoopController m_piController1 = m_motor1.getClosedLoopController();
   private final SparkClosedLoopController m_piController2 = m_motor2.getClosedLoopController();
@@ -66,15 +67,15 @@ public class ElevatorSubsystem extends SubsystemBase {
 
   public void setPosition(ElevatorState targetState) {
     m_setPoint = targetState;
-    SmartDashboard.putNumber("armsetposition", targetState.getPosition());
+    SmartDashboard.putNumber("elevatorsetposition", targetState.getPosition());
     m_piController1.setReference(targetState.getPosition(), ControlType.kPosition);
     m_piController2.setReference(targetState.getPosition(), ControlType.kPosition);
 
   }
 
   public void printPosition() {
-    SmartDashboard.putNumber("arm target", m_setPoint != null ? m_setPoint.getPosition() : -9999);
-    SmartDashboard.putNumber("arm position", m_encoder.getPosition());
+    SmartDashboard.putNumber("elevator target", m_setPoint != null ? m_setPoint.getPosition() : -9999);
+    SmartDashboard.putNumber("elevator position", m_encoder.getPosition());
   }
 
   public void printSpeed() {
@@ -92,6 +93,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       // m_motor1.set(0);
     // }
 
-    //m_motor1.set(speed / (1.0 - ControllerConstants.kDeadzone));
+    m_motor1.set(speed / (1.0 - OperatorConstants.DEADBAND));
+    m_motor2.set(speed / (1.0 - OperatorConstants.DEADBAND));
   }
 }

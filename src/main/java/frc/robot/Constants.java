@@ -51,9 +51,9 @@ public final class Constants
 
   public static final class ElevatorConstants 
   { // set values
-    public static final int kArmLeft = 8;
+    public static final int kElevatorLeft = 10;
     public static final boolean kMotorInverted1 = false;
-    public static final int kArmRight = 7;
+    public static final int kElevatorRight = 11;
     public static final boolean kMotorInverted2 = true;
     public static final int kMinPosition = 0;
     public static final double kP = 6.8; //more p 
@@ -67,11 +67,10 @@ public final class Constants
 
     public enum ElevatorState {
       ZERO(0.0),
-      RESTING(17.0),
+      RESTING(1.0),
       SCORE_L2(7.5),
       SCORE_L3(10.8),
-      SCORE_L4(17.2), 
-      SCORE_SPEAKER_AUTO_2(6.3);//5.4);
+      SCORE_L4(17.2);
 
       final double position;
 
@@ -87,8 +86,8 @@ public final class Constants
   public static final class ShooterConstants {
     // set ports
 
-    public static final int kShooterRightPort = 5;
-    public static final int kShooterLeftPort = 6;
+    public static final int kShooterRightPort = 12;
+    public static final int kShooterLeftPort = 13;
 
     // set speed?
     public static final double kShooterSpeed = 1.0; 
