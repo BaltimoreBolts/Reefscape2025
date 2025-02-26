@@ -32,10 +32,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   public ElevatorSubsystem() {
     
     motor1Config
-      .inverted(true)
+      .inverted(false)
       .idleMode(IdleMode.kBrake);
     motor2Config
       .inverted(false)
+      .follow(ElevatorConstants.kElevatorLeft)
       .idleMode(IdleMode.kBrake);
     motor1Config.closedLoop 
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -94,6 +95,6 @@ public class ElevatorSubsystem extends SubsystemBase {
     // }
 
     m_motor1.set(speed / (1.0 - OperatorConstants.DEADBAND));
-    m_motor2.set(speed / (1.0 - OperatorConstants.DEADBAND));
   }
+  
 }

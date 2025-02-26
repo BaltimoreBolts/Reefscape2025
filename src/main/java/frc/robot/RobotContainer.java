@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -30,10 +31,12 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer
 {
+  private ElevatorSubsystem m_elevatorSubsystem; 
   private final SendableChooser<Command> autoChooser;
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
+  private final Joystick m_operatorController = new Joystick(1);
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
@@ -155,6 +158,11 @@ public class RobotContainer
       driverXbox.rightBumper().onTrue(Commands.none());
     } else
     {
+      /*
+       *   _______________
+       * ||Driver Controls||
+       *   _______________
+       */
       driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
       driverXbox.b().whileTrue(
@@ -165,6 +173,14 @@ public class RobotContainer
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
+
+      /*
+       *   _________________
+       * ||Operator Controls||
+       *   _________________
+       */
+      new Trigger(() -> Math.abs(m_operatorController.getRawAxis(Axis.kLeftY)) > OperatorConstants.DEADBAND)
+          .whileTrue(new ElevatorSpeedCommand(m_ElevatorSubsystem, () -> -1 * m_operatorController.getRawAxis(Axis.kLeftY)));
     }
 
   }
