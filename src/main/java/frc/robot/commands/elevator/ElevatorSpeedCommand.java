@@ -7,7 +7,7 @@ import java.util.function.Supplier;
 
 public class ElevatorSpeedCommand extends Command {
     private final ElevatorSubsystem m_elevatorSubsystem;
-    private Supplier<Double> m_speedSupplier;
+    private final Supplier<Double> m_speedSupplier;
 
     public ElevatorSpeedCommand(ElevatorSubsystem elevatorSubsystem, Supplier<Double> speed) {
         addRequirements(elevatorSubsystem);

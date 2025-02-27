@@ -7,8 +7,8 @@ import frc.robot.Constants.ElevatorConstants.ElevatorState;
 import frc.robot.subsystems.ElevatorSubsystem;
 
 public class ElevatorPositionCommand extends Command {
-    private ElevatorSubsystem elevatorSubsystem;
-    private ElevatorState targetState;
+    private final ElevatorSubsystem elevatorSubsystem;
+    private final ElevatorState targetState;
     private int loopsWithinThreshold = 0;
 
     public ElevatorPositionCommand(ElevatorSubsystem elevatorSubsystem, ElevatorState targetState) {

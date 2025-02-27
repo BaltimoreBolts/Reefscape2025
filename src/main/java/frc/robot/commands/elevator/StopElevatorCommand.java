@@ -13,6 +13,6 @@ public class StopElevatorCommand extends InstantCommand {
 
     @Override
     public void execute() {
-        elevatorSubsystem.setSpeed(0);
+        elevatorSubsystem.setSpeed(0.0);
     }
 }

@@ -1,9 +1,7 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -17,22 +15,18 @@ public class ShooterSubsystem extends SubsystemBase {
             new SparkMax(ShooterConstants.kShooterLeftPort, MotorType.kBrushless);
     private final SparkMax m_motor2 =
             new SparkMax(ShooterConstants.kShooterRightPort, MotorType.kBrushless);
-    private final SparkClosedLoopController m_pidController1 = m_motor1.getClosedLoopController();
-    private final SparkClosedLoopController m_pidController2 = m_motor2.getClosedLoopController();
 
     SparkBaseConfig motor1Config = new SparkMaxConfig();
     SparkBaseConfig motor2Config = new SparkMaxConfig();
 
     private ScoringTarget scoringTarget = ScoringTarget.L4;
 
-    private double speedModifier = 0.0;
+    private final double speedModifier = 0.0;
 
     public ShooterSubsystem() {
 
         motor1Config.inverted(false).idleMode(IdleMode.kBrake);
         motor2Config.inverted(false).idleMode(IdleMode.kBrake);
-        motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(1.0, 0.0, 0.0);
-        motor2Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(1.0, 0.0, 0.0);
     }
 
     public void setScoringTarget(ScoringTarget target) {
@@ -53,6 +47,7 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putBoolean("targetL4", scoringTarget == ScoringTarget.L4);
     }
 
+    @Override
     public void periodic() {
         printTarget();
     }

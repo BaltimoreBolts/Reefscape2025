@@ -17,11 +17,8 @@ import frc.robot.Constants.ElevatorConstants.ElevatorState;
 public class ElevatorSubsystem extends SubsystemBase {
     private final SparkMax m_motor1 =
             new SparkMax(ElevatorConstants.kElevatorLeft, MotorType.kBrushless);
-    private final SparkMax m_motor2 =
-            new SparkMax(ElevatorConstants.kElevatorRight, MotorType.kBrushless);
     private final RelativeEncoder m_encoder = m_motor1.getEncoder();
     private final SparkClosedLoopController m_piController1 = m_motor1.getClosedLoopController();
-    private final SparkClosedLoopController m_piController2 = m_motor2.getClosedLoopController();
 
     SparkMaxConfig motor1Config = new SparkMaxConfig();
     SparkMaxConfig motor2Config = new SparkMaxConfig();
@@ -29,17 +26,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     private ElevatorState m_setPoint;
 
     public ElevatorSubsystem() {
+        var motor2 = new SparkMax(ElevatorConstants.kElevatorRight, MotorType.kBrushless);
 
         motor1Config.inverted(false).idleMode(IdleMode.kBrake);
         motor2Config.inverted(false).follow(ElevatorConstants.kElevatorLeft).idleMode(IdleMode.kBrake);
         motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(1.0, 0.0, 0.0);
-        motor2Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(1.0, 0.0, 0.0);
 
         // TODO IDK how to make motors follow
         // TODO IDK how the new configuring works in terms of the old burning
         // m_motor1.configure(motor1Config, ResetMode.kResetSafeParameters,
         // PersistMode.kPersistParameters);
-        // m_motor2.configure(motor2Config, null, null);
+        // motor2.configure(motor2Config, null, null);
 
         zeroEncoders();
     }
@@ -60,7 +57,6 @@ public class ElevatorSubsystem extends SubsystemBase {
         m_setPoint = targetState;
         SmartDashboard.putNumber("elevatorsetposition", targetState.getPosition());
         m_piController1.setReference(targetState.getPosition(), ControlType.kPosition);
-        m_piController2.setReference(targetState.getPosition(), ControlType.kPosition);
     }
 
     public void printPosition() {
@@ -71,9 +67,9 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     public void printSpeed() {
         SmartDashboard.putNumber("arm speed 1", m_motor1.getAppliedOutput());
-        SmartDashboard.putNumber("arm speed 2", m_motor2.getAppliedOutput());
     }
 
+    @Override
     public void periodic() {
         printPosition();
         printSpeed();

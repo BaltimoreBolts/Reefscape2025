@@ -35,7 +35,7 @@ import swervelib.SwerveInputStream;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
-    private ElevatorSubsystem m_elevatorSubsystem;
+    private ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
     private final SendableChooser<Command> autoChooser;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -108,69 +108,72 @@ public class RobotContainer {
      */
     private void configureBindings() {
 
-        Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
+        // Command driveFieldOrientedDirectAngle = drivebase.driveFieldOriented(driveDirectAngle);
         Command driveFieldOrientedAnglularVelocity = drivebase.driveFieldOriented(driveAngularVelocity);
-        Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
-        Command driveSetpointGen = drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
+        // Command driveRobotOrientedAngularVelocity = drivebase.driveFieldOriented(driveRobotOriented);
+        // Command driveSetpointGen =
+        // drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngle);
         Command driveFieldOrientedDirectAngleKeyboard =
                 drivebase.driveFieldOriented(driveDirectAngleKeyboard);
-        Command driveFieldOrientedAnglularVelocityKeyboard =
-                drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
-        Command driveSetpointGenKeyboard =
-                drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
+        // Command driveFieldOrientedAnglularVelocityKeyboard =
+        //         drivebase.driveFieldOriented(driveAngularVelocityKeyboard);
+        // Command driveSetpointGenKeyboard =
+        //         drivebase.driveWithSetpointGeneratorFieldRelative(driveDirectAngleKeyboard);
 
+        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
+
+        // *************************
+        //    Simulation Commands
+        // *************************
         if (RobotBase.isSimulation()) {
             drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
-        } else {
-            drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
-        }
 
-        if (Robot.isSimulation()) {
             driverXbox
                     .start()
                     .onTrue(
                             Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
             driverXbox.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
         }
-        if (DriverStation.isTest()) {
-            drivebase.setDefaultCommand(
-                    driveFieldOrientedAnglularVelocity); // Overrides drive command above!
 
-            driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-            driverXbox.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-            driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-            driverXbox.back().whileTrue(drivebase.centerModulesCommand());
-            driverXbox.leftBumper().onTrue(Commands.none());
-            driverXbox.rightBumper().onTrue(Commands.none());
-        } else {
-            /*
-             *   _______________
-             * ||Driver Controls||
-             *   _______________
-             */
-            driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-            driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-            driverXbox
-                    .b()
-                    .whileTrue(drivebase.driveToPose(
-                            new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-            driverXbox.start().whileTrue(Commands.none());
-            driverXbox.back().whileTrue(Commands.none());
-            driverXbox
-                    .leftBumper()
-                    .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-            driverXbox.rightBumper().onTrue(Commands.none());
+        // ************************
+        //    Test Mode Commands
+        // ************************
+        var isTest = new Trigger(DriverStation::isTest);
+        driverXbox
+                .x()
+                .and(isTest)
+                .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        driverXbox.y().and(isTest).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+        driverXbox.start().and(isTest).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        driverXbox.back().and(isTest).whileTrue(drivebase.centerModulesCommand());
+        // driverXbox.leftBumper().and(isTest).onTrue(Commands.none());
+        // driverXbox.rightBumper().and(isTest).onTrue(Commands.none());
 
-            /*
-             *   _________________
-             * ||Operator Controls||
-             *   _________________
-             */
-            new Trigger(() -> Math.abs(m_operatorController.getRawAxis(Axis.kLeftY))
-                            > ControllerConstants.kDeadzone)
-                    .whileTrue(new ElevatorSpeedCommand(
-                            m_elevatorSubsystem, () -> -1 * m_operatorController.getRawAxis(Axis.kLeftY)));
-        }
+        // **************************
+        //    Normal Mode Commands
+        // **************************
+
+        // Driver Controls
+        driverXbox.a().and(isTest.negate()).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        driverXbox.x().and(isTest.negate()).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+        driverXbox
+                .b()
+                .and(isTest.negate())
+                .whileTrue(
+                        drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
+        // driverXbox.start().and(isTest.negate()).whileTrue(Commands.none());
+        // driverXbox.back().and(isTest.negate()).whileTrue(Commands.none());
+        driverXbox
+                .leftBumper()
+                .and(isTest.negate())
+                .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        // driverXbox.rightBumper().and(isTest.negate()).onTrue(Commands.none());
+
+        // Operator Controls
+        var operatorLeftStickY = new Trigger(() ->
+                Math.abs(m_operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
+        operatorLeftStickY.whileTrue(new ElevatorSpeedCommand(
+                m_elevatorSubsystem, () -> -1.0 * m_operatorController.getRawAxis(Axis.kLeftY)));
     }
 
     /**
