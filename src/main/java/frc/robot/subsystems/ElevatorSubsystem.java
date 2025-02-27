@@ -1,6 +1,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
@@ -8,6 +9,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.servohub.ServoHub.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ElevatorConstants.ElevatorState;
 import frc.robot.Constants.OperatorConstants;
-//import frc.robot.Constants.ControllerConstants;
+import frc.robot.Constants.ControllerConstants;
 
 public class ElevatorSubsystem extends SubsystemBase {
   private final SparkMax m_motor1 = new SparkMax(ElevatorConstants.kElevatorLeft, MotorType.kBrushless);
@@ -44,11 +46,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     motor2Config.closedLoop
       .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
       .pid(1.0, 0.0, 0.0);
-
+      
     //TODO IDK how to make motors follow
     //TODO IDK how the new configuring works in terms of the old burning
-    m_motor1.configure(motor1Config, null, null);
-    m_motor2.configure(motor2Config, null, null);
+    // m_motor1.configure(motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    // m_motor2.configure(motor2Config, null, null);
 
     zeroEncoders();
 
@@ -94,7 +96,7 @@ public class ElevatorSubsystem extends SubsystemBase {
       // m_motor1.set(0);
     // }
 
-    m_motor1.set(speed / (1.0 - OperatorConstants.DEADBAND));
+    m_motor1.set(speed / (1.0 - ControllerConstants.kDeadzone));
   }
   
 }

@@ -18,7 +18,32 @@ import swervelib.math.Matter;
  */
 public final class Constants
 {
+  public static class ControllerConstants {
+    public static final double kDeadzone = .1;
+    public static final double kTriggerDeadzone = .05;
 
+    public static final class Axis {
+      public static final int kLeftX = 0;
+      public static final int kLeftY = 1;
+      public static final int kRightX = 4;
+      public static final int kLeftTrigger = 2;
+      public static final int kRightTrigger = 3;
+      public static final int kRightY = 5;
+    }
+
+    public static final class Button {
+      public static final int kA = 1;
+      public static final int kB = 2;
+      public static final int kX = 3;
+      public static final int kY = 4;
+      public static final int kLeftBumper = 5;
+      public static final int kRightBumper = 6;
+      public static final int kLeftMenu = 7;
+      public static final int kRightMenu = 8;
+      public static final int kLeftTriggerButton = 9;
+      public static final int kRightTriggerButton = 10;
+    }
+  }
   public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
   public static final Matter CHASSIS    = new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
   public static final double LOOP_TIME  = 0.13; //s, 20ms + 110ms sprk max velocity lag

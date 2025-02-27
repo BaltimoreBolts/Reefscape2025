@@ -11,14 +11,19 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ControllerConstants.Axis;
+import frc.robot.commands.elevator.ElevatorSpeedCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
@@ -179,8 +184,8 @@ public class RobotContainer
        * ||Operator Controls||
        *   _________________
        */
-      new Trigger(() -> Math.abs(m_operatorController.getRawAxis(Axis.kLeftY)) > OperatorConstants.DEADBAND)
-          .whileTrue(new ElevatorSpeedCommand(m_ElevatorSubsystem, () -> -1 * m_operatorController.getRawAxis(Axis.kLeftY)));
+       new Trigger(() -> Math.abs(m_operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone)
+            .whileTrue(new ElevatorSpeedCommand(m_elevatorSubsystem, () -> -1 *m_operatorController.getRawAxis(Axis.kLeftY)));
     }
 
   }
