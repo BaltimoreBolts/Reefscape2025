@@ -91,7 +91,7 @@ public final class Constants {
         public enum ElevatorState {
             ZERO(0.0),
             RESTING(1.0),
-            SCORE_L2(7.5),
+            SCORE_L2(1.0),
             SCORE_L3(10.8),
             SCORE_L4(17.2);
 

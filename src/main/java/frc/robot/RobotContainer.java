@@ -186,6 +186,10 @@ public class RobotContainer {
         
         new JoystickButton(m_operatorController, ControllerConstants.Button.kA)
                 .whileTrue(new ScoreL2Command(m_elevatorSubsystem, m_shooterSubsystem)); 
+        new JoystickButton(m_operatorController, ControllerConstants.Button.kB)
+                .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem)); 
+        new JoystickButton(m_operatorController, ControllerConstants.Button.kY)
+                .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem)); 
     }
 
     /**
