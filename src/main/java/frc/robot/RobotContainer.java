@@ -27,9 +27,9 @@ import frc.robot.Constants.ControllerConstants.Axis;
 import frc.robot.Constants.OperatorConstants;
 // import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.elevator.ElevatorSpeedCommand;
+import frc.robot.commands.scoring.ScoreL1Command;
 import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
-import frc.robot.commands.scoring.ScoreL4Command;
 import frc.robot.commands.shooter.ShooterSpeedCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -186,14 +186,15 @@ public class RobotContainer {
                 m_elevatorSubsystem, () -> -1.0 * m_operatorController.getRawAxis(Axis.kLeftY)));
 
         new JoystickButton(m_operatorController, ControllerConstants.Button.kA)
-                .whileTrue(new ScoreL2Command(m_elevatorSubsystem, m_shooterSubsystem));
+                .whileTrue(new ScoreL1Command(m_elevatorSubsystem, m_shooterSubsystem));
         new JoystickButton(m_operatorController, ControllerConstants.Button.kB)
-                .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
+                .whileTrue(new ScoreL2Command(m_elevatorSubsystem, m_shooterSubsystem));
         new JoystickButton(m_operatorController, ControllerConstants.Button.kY)
-                .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
+                .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
 
         new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.5));
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.25))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
     }
 
     /**

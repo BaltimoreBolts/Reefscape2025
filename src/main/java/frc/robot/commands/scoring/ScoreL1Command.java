@@ -8,9 +8,9 @@ import frc.robot.commands.shooter.StopShooterCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
-public class ScoreL4Command extends SequentialCommandGroup {
-    public ScoreL4Command(ElevatorSubsystem elevatorSubsystem, ShooterSubsystem shooterSubsystem) {
-        addCommands(new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.SCORE_L4)
-                .alongWith(new StopShooterCommand(shooterSubsystem), Commands.print("scoring in L4")));
+public class ScoreL1Command extends SequentialCommandGroup {
+    public ScoreL1Command(ElevatorSubsystem elevatorSubsystem, ShooterSubsystem shooterSubsystem) {
+        addCommands(new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.SCORE_L1)
+                .alongWith(new StopShooterCommand(shooterSubsystem), Commands.print("scoring in L1")));
     }
 }

@@ -84,16 +84,17 @@ public final class Constants {
         // public static final double kIz = 0;
         // public static final double kD = 6.0; // change as needed
         // public static final double kFF = 0.07;
-        public static final double kSpeedLimitFactor = 0.5;
+        public static final double kSpeedLimitFactor = 0.25;
         public static final double kToleranceRotations = 0.2;
         public static final double kArmSpeedModifier = 0.25;
 
-        public enum ElevatorState {
+        public enum ElevatorState { // 2 enc values per inch
             ZERO(0.0),
             RESTING(1.0),
-            SCORE_L2(1.0),
-            SCORE_L3(10.8),
-            SCORE_L4(17.2);
+            SCORE_L1(20.0), // 10inch travel; put bottom edge of coral at 20in off ground
+            SCORE_L2(40.0), // 20inch travel; put center of coral at 32in off ground
+            SCORE_L3(0.0),
+            SCORE_L4(0.0);
 
             final double position;
 
