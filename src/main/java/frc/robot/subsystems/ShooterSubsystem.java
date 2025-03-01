@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
@@ -25,8 +27,11 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem() {
 
-        motor1Config.inverted(false).idleMode(IdleMode.kBrake);
-        motor2Config.inverted(false).idleMode(IdleMode.kBrake);
+        motor1Config.inverted(false).idleMode(IdleMode.kCoast);
+        motor2Config.inverted(false).idleMode(IdleMode.kCoast);
+
+        m_motor1.configure(motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        m_motor2.configure(motor2Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     public void setScoringTarget(ScoringTarget target) {
