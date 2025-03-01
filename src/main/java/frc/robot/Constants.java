@@ -79,11 +79,11 @@ public final class Constants {
         public static final int kElevatorRight = 11;
         public static final boolean kMotorInverted2 = true;
         public static final int kMinPosition = 0;
-        public static final double kP = 6.8; // more p
-        public static final double kI = 0.0; // 003;
-        public static final double kIz = 0;
-        public static final double kD = 6.0; // change as needed
-        public static final double kFF = 0.07;
+        // public static final double kP = 6.8; // more p
+        // public static final double kI = 0.0; // 003;
+        // public static final double kIz = 0;
+        // public static final double kD = 6.0; // change as needed
+        // public static final double kFF = 0.07;
         public static final double kSpeedLimitFactor = 0.5;
         public static final double kToleranceRotations = 0.2;
         public static final double kArmSpeedModifier = 0.25;

@@ -32,8 +32,7 @@ public class ElevatorSubsystem extends SubsystemBase {
         motor2Config.inverted(false).follow(ElevatorConstants.kElevatorLeft).idleMode(IdleMode.kBrake);
         motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(1.0, 0.0, 0.0);
 
-        // TODO IDK how to make motors follow
-        // TODO IDK how the new configuring works in terms of the old burning
+
         // m_motor1.configure(motor1Config, ResetMode.kResetSafeParameters,
         // PersistMode.kPersistParameters);
         // motor2.configure(motor2Config, null, null);

@@ -13,17 +13,25 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Axis;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.elevator.ElevatorSpeedCommand;
+import frc.robot.commands.scoring.ScoreL2Command;
+import frc.robot.commands.scoring.ScoreL3Command;
+import frc.robot.commands.scoring.ScoreL4Command;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -36,6 +44,7 @@ import swervelib.SwerveInputStream;
  */
 public class RobotContainer {
     private ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
+    private ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem(); 
     private final SendableChooser<Command> autoChooser;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -174,6 +183,9 @@ public class RobotContainer {
                 Math.abs(m_operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
         operatorLeftStickY.whileTrue(new ElevatorSpeedCommand(
                 m_elevatorSubsystem, () -> -1.0 * m_operatorController.getRawAxis(Axis.kLeftY)));
+        
+        new JoystickButton(m_operatorController, ControllerConstants.Button.kA)
+                .whileTrue(new ScoreL2Command(m_elevatorSubsystem, m_shooterSubsystem)); 
     }
 
     /**

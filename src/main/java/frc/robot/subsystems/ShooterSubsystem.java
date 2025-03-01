@@ -38,7 +38,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
 
     public void stopShooter() {
-        setSpeed(0);
+        setSpeed(0.0);
     }
 
     public void printTarget() {
@@ -54,8 +54,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public void setSpeed(double speed) {
         double speedToSet = speed + speedModifier;
-        if (speed == 0) {
-            speedToSet = 0;
+        if (speed == 0.0) {
+            speedToSet = 0.0;
         }
         m_motor1.set(speedToSet);
         m_motor2.set(speedToSet);
