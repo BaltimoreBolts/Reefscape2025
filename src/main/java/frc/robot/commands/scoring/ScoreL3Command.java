@@ -9,8 +9,8 @@ import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 
 public class ScoreL3Command extends SequentialCommandGroup {
-    public ScoreL3Command(ElevatorSubsystem armSubsystem, ShooterSubsystem shooterSubsystem) {
-        addCommands(new ElevatorPositionCommand(armSubsystem, ElevatorState.SCORE_L3)
+    public ScoreL3Command(ElevatorSubsystem elevatorSubsystem, ShooterSubsystem shooterSubsystem) {
+        addCommands(new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.SCORE_L3)
                 .alongWith(new StopShooterCommand(shooterSubsystem), Commands.print("scoring in L3")));
     }
 }

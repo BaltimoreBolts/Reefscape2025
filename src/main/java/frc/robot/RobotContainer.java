@@ -30,6 +30,7 @@ import frc.robot.commands.elevator.ElevatorSpeedCommand;
 import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
 import frc.robot.commands.scoring.ScoreL4Command;
+import frc.robot.commands.shooter.ShooterSpeedCommand;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -190,6 +191,9 @@ public class RobotContainer {
                 .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
         new JoystickButton(m_operatorController, ControllerConstants.Button.kY)
                 .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
+
+        new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.5));
     }
 
     /**
