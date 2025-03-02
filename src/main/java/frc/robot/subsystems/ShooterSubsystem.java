@@ -27,8 +27,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     public ShooterSubsystem() {
 
-        motor1Config.inverted(false).idleMode(IdleMode.kCoast);
-        motor2Config.inverted(true).idleMode(IdleMode.kCoast);
+        motor1Config.inverted(true).idleMode(IdleMode.kCoast);
+        motor2Config.inverted(false).idleMode(IdleMode.kCoast);
 
         m_motor1.configure(
                 motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

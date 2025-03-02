@@ -193,7 +193,7 @@ public class RobotContainer {
                 .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
 
         new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.25))
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.35))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
     }
 
