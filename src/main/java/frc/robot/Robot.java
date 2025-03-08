@@ -4,11 +4,16 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.swervedrive.drivebase.AbsoluteDrive;
+import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -17,6 +22,14 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  * project.
  */
 public class Robot extends TimedRobot {
+
+    private final XboxController m_controller = new XboxController(0);
+    private final AbsoluteDrive m_swerve = new AbsoluteDrive(null, null, null, null, null);
+
+    // Slew rate limiters to make joystick inputs more gentle; 1/3 sec from 0 to 1.
+    private final SlewRateLimiter m_xspeedLimiter = new SlewRateLimiter(3);
+    private final SlewRateLimiter m_yspeedLimiter = new SlewRateLimiter(3);
+    private final SlewRateLimiter m_rotLimiter = new SlewRateLimiter(3);
 
     private static Robot instance;
     private Command m_autonomousCommand;
@@ -118,6 +131,7 @@ public class Robot extends TimedRobot {
     /** This function is called periodically during operator control. */
     @Override
     public void teleopPeriodic() {}
+        
 
     @Override
     public void testInit() {

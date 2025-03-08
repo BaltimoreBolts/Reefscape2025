@@ -19,6 +19,7 @@ import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -29,11 +30,14 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
+import frc.robot.Constants.DrivebaseConstants;
+import frc.robot.LimelightHelpers;
 import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
@@ -399,6 +403,9 @@ public class SwerveSubsystem extends SubsystemBase {
      * @param headingY Heading Y to calculate angle of the joystick.
      * @return Drive command.
      */
+
+    
+
     public Command driveCommand(
             DoubleSupplier translationX,
             DoubleSupplier translationY,
@@ -436,7 +443,25 @@ public class SwerveSubsystem extends SubsystemBase {
      *     field/robot relativity.
      * @param fieldRelative Drive mode. True for field-relative, false for robot-relative.
      */
+
+    double limelight_aim_proportional(){
+        double kP = 0.035;
+        double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP; 
+        targetingAngularVelocity *= swerveDrive.getMaximumChassisAngularVelocity();
+        targetingAngularVelocity *= -1.0;
+        return targetingAngularVelocity; 
+    }        
+
+    double limelight_range_proportional(){    
+        double kP = .1;
+        double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
+        targetingForwardSpeed *= swerveDrive.getMaximumChassisVelocity();
+        targetingForwardSpeed *= -1.0;
+        return targetingForwardSpeed;
+    }
+    
     public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
+        
         swerveDrive.drive(
                 translation,
                 rotation,
