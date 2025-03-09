@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
-import frc.robot.Constants.DrivebaseConstants;
 import frc.robot.Constants.ControllerConstants.Axis;
 import frc.robot.Constants.OperatorConstants;
 // import frc.robot.Constants.ShooterConstants;
@@ -44,9 +43,6 @@ import swervelib.SwerveInputStream;
  * periodic methods (other than the scheduler calls). Instead, the structure of the robot (including
  * subsystems, commands, and trigger mappings) should be declared here.
  */
-
-
-
 public class RobotContainer {
     private ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
     private ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
