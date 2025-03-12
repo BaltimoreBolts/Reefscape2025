@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Axis;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.AlignToReefTagRelative;
 // import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.elevator.ElevatorSpeedCommand;
 import frc.robot.commands.scoring.ScoreL1Command;
@@ -50,8 +51,8 @@ public class RobotContainer {
     private final SendableChooser<Command> autoChooser;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
-    final CommandXboxController driverXbox = new CommandXboxController(0);
-    private final Joystick m_operatorController = new Joystick(1);
+    final CommandXboxController driverController = new CommandXboxController(0);
+    private final Joystick operatorController = new Joystick(1);
     // The robot's subsystems and commands are defined here...
     private final SwerveSubsystem drivebase =
             new SwerveSubsystem(new File(Filesystem.getDeployDirectory(), "swerve/neo"));
@@ -62,9 +63,9 @@ public class RobotContainer {
      */
     SwerveInputStream driveAngularVelocity = SwerveInputStream.of(
                     drivebase.getSwerveDrive(),
-                    () -> driverXbox.getLeftY() * -1,
-                    () -> driverXbox.getLeftX() * -1)
-            .withControllerRotationAxis(() -> driverXbox.getRightX() * -1)
+                    () -> driverController.getLeftY() * -1,
+                    () -> driverController.getLeftX() * -1)
+            .withControllerRotationAxis(() -> driverController.getRightX() * -1)
             .deadband(OperatorConstants.DEADBAND)
             .scaleTranslation(0.8)
             .allianceRelativeControl(true);
@@ -72,7 +73,7 @@ public class RobotContainer {
     /** Clone's the angular velocity input stream and converts it to a fieldRelative input stream. */
     SwerveInputStream driveDirectAngle = driveAngularVelocity
             .copy()
-            .withControllerHeadingAxis(driverXbox::getRightX, driverXbox::getRightY)
+            .withControllerHeadingAxis(driverController::getRightX, driverController::getRightY)
             .headingWhile(true);
 
     /** Clone's the angular velocity input stream and converts it to a robotRelative input stream. */
@@ -80,8 +81,10 @@ public class RobotContainer {
             driveAngularVelocity.copy().robotRelative(true).allianceRelativeControl(false);
 
     SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(
-                    drivebase.getSwerveDrive(), () -> -driverXbox.getLeftY(), () -> -driverXbox.getLeftX())
-            .withControllerRotationAxis(() -> driverXbox.getRawAxis(2))
+                    drivebase.getSwerveDrive(),
+                    () -> -driverController.getLeftY(),
+                    () -> -driverController.getLeftX())
+            .withControllerRotationAxis(() -> driverController.getRawAxis(2))
             .deadband(OperatorConstants.DEADBAND)
             .scaleTranslation(0.8)
             .allianceRelativeControl(true);
@@ -89,8 +92,8 @@ public class RobotContainer {
     SwerveInputStream driveDirectAngleKeyboard = driveAngularVelocityKeyboard
             .copy()
             .withControllerHeadingAxis(
-                    () -> Math.sin(driverXbox.getRawAxis(2) * Math.PI) * (Math.PI * 2),
-                    () -> Math.cos(driverXbox.getRawAxis(2) * Math.PI) * (Math.PI * 2))
+                    () -> Math.sin(driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2),
+                    () -> Math.cos(driverController.getRawAxis(2) * Math.PI) * (Math.PI * 2))
             .headingWhile(true);
 
     /** The container for the robot. Contains subsystems, OI devices, and commands. */
@@ -139,61 +142,65 @@ public class RobotContainer {
         if (RobotBase.isSimulation()) {
             drivebase.setDefaultCommand(driveFieldOrientedDirectAngleKeyboard);
 
-            driverXbox
+            driverController
                     .start()
                     .onTrue(
                             Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
-            driverXbox.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
+            driverController.button(1).whileTrue(drivebase.sysIdDriveMotorCommand());
         }
 
         // ************************
         //    Test Mode Commands
         // ************************
         var isTest = new Trigger(DriverStation::isTest);
-        driverXbox
+        driverController
                 .x()
                 .and(isTest)
                 .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        driverXbox.y().and(isTest).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-        driverXbox.start().and(isTest).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        driverXbox.back().and(isTest).whileTrue(drivebase.centerModulesCommand());
-        // driverXbox.leftBumper().and(isTest).onTrue(Commands.none());
-        // driverXbox.rightBumper().and(isTest).onTrue(Commands.none());
+        driverController.y().and(isTest).whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+        driverController.start().and(isTest).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        driverController.back().and(isTest).whileTrue(drivebase.centerModulesCommand());
+        // driverController.leftBumper().and(isTest).onTrue(Commands.none());
+        // driverController.rightBumper().and(isTest).onTrue(Commands.none());
 
         // **************************
         //    Normal Mode Commands
         // **************************
 
         // Driver Controls
-        driverXbox.a().and(isTest.negate()).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        driverXbox.x().and(isTest.negate()).onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-        driverXbox
+        driverController.a().and(isTest.negate()).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        driverController
+                .x()
+                .and(isTest.negate())
+                .onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+        driverController
                 .b()
                 .and(isTest.negate())
                 .whileTrue(
                         drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
 
-        // driverXbox.start().and(isTest.negate()).whileTrue(Commands.none());
-        // driverXbox.back().and(isTest.negate()).whileTrue(Commands.none());
-        driverXbox
+        // driverController.start().and(isTest.negate()).whileTrue(Commands.none());
+        // driverController.back().and(isTest.negate()).whileTrue(Commands.none());
+        driverController
                 .leftBumper()
                 .and(isTest.negate())
                 .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-
+        driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
+        driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
         // Operator Controls
-        var operatorLeftStickY = new Trigger(() ->
-                Math.abs(m_operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
+        var operatorLeftStickY = new Trigger(
+                () -> Math.abs(operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
         operatorLeftStickY.whileTrue(new ElevatorSpeedCommand(
-                m_elevatorSubsystem, () -> -1.0 * m_operatorController.getRawAxis(Axis.kLeftY)));
+                m_elevatorSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kLeftY)));
 
-        new JoystickButton(m_operatorController, ControllerConstants.Button.kA)
+        new JoystickButton(operatorController, ControllerConstants.Button.kA)
                 .whileTrue(new ScoreL1Command(m_elevatorSubsystem, m_shooterSubsystem));
-        new JoystickButton(m_operatorController, ControllerConstants.Button.kB)
+        new JoystickButton(operatorController, ControllerConstants.Button.kB)
                 .whileTrue(new ScoreL2Command(m_elevatorSubsystem, m_shooterSubsystem));
-        new JoystickButton(m_operatorController, ControllerConstants.Button.kY)
+        new JoystickButton(operatorController, ControllerConstants.Button.kY)
                 .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
 
-        new JoystickButton(m_operatorController, ControllerConstants.Button.kX)
+        new JoystickButton(operatorController, ControllerConstants.Button.kX)
                 .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.35))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
     }
