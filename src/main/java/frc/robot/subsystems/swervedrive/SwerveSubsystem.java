@@ -130,12 +130,16 @@ public class SwerveSubsystem extends SubsystemBase {
     //     vision = new Vision(swerveDrive::getPose, swerveDrive.field);
     // }
     public void updateVisionOdometry() {
-        LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
-        if(limelightMeasurement.tagCount >= 2) {
-            swerveDrive.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds, VecBuilder.fill(.7,.7,9999999));
+        LimelightHelpers.PoseEstimate limelightMeasurement =
+                LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+        if (limelightMeasurement.tagCount >= 2) {
+            swerveDrive.addVisionMeasurement(
+                    limelightMeasurement.pose,
+                    limelightMeasurement.timestampSeconds,
+                    VecBuilder.fill(.7, .7, 9999999));
         }
     }
-    
+
     @Override
     public void periodic() {
         updateVisionOdometry();
@@ -440,7 +444,6 @@ public class SwerveSubsystem extends SubsystemBase {
      *     field/robot relativity.
      * @param fieldRelative Drive mode. True for field-relative, false for robot-relative.
      */
-
     public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
 
         swerveDrive.drive(
@@ -683,5 +686,4 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveDrive getSwerveDrive() {
         return swerveDrive;
     }
-    
 }
