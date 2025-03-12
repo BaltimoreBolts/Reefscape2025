@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -13,6 +15,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.XboxController;
 // import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,6 +34,7 @@ import frc.robot.commands.scoring.ScoreL1Command;
 import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
 import frc.robot.commands.shooter.ShooterSpeedCommand;
+import frc.robot.commands.swervedrive.drivebase.driveAimAtTarget;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -46,6 +50,7 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
     private ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
     private ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
+    private SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(null); 
     private final SendableChooser<Command> autoChooser;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -171,14 +176,15 @@ public class RobotContainer {
                 .and(isTest.negate())
                 .whileTrue(
                         drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
+        
+        // driverXbox.y().whileTrue(new driveAimAtTarget(m_swerveSubsystem, ()->MathUtil.applyDeadband(-driverXbox.getLeftY(), ControllerConstants.kDeadband), ()->MathUtil.applyDeadband(-driverXbox.getLeftX(), ControllerConstants.kDeadband)));
         // driverXbox.start().and(isTest.negate()).whileTrue(Commands.none());
         // driverXbox.back().and(isTest.negate()).whileTrue(Commands.none());
         driverXbox
                 .leftBumper()
                 .and(isTest.negate())
                 .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        // driverXbox.rightBumper().and(isTest.negate()).onTrue(Commands.none());
-
+        
         // Operator Controls
         var operatorLeftStickY = new Trigger(() ->
                 Math.abs(m_operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);

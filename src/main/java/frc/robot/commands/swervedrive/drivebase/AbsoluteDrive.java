@@ -63,62 +63,7 @@ public class AbsoluteDrive extends Command {
     public void initialize() {
         initRotation = true;
     }
-    // TODO: Where to implment this aiming and ranging simotaneously code (i.e., AbsoluteDrive,
-    // SwerveSubsystem, Robotcontainer)
-    // double limelight_aim_proportional()
-    // {
-    //     double kP = .035;
-    //     double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
-    //     targetingAngularVelocity *= Math.PI;
-    //     targetingAngularVelocity *= -1.0;
-    //     return targetingAngularVelocity;
-    // }
-    // double limelight_range_proportional()
-    // {
-    //     double kP = .1;
-    //     double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
-    //     targetingForwardSpeed *= 3.0;
-    //     targetingForwardSpeed *= -1.0;
-    //     return targetingForwardSpeed;
-    // }
 
-    // private void drive(boolean fieldRelative) {
-    //     // Get the x speed. We are inverting this because Xbox controllers return
-    //     // negative values when we push forward.
-    //     var xSpeed =
-    //         -m_xspeedLimiter.calculate(MathUtil.applyDeadband(m_controller.getLeftY(), 0.02))
-    //             * 3.0;
-
-    //     // Get the y speed or sideways/strafe speed. We are inverting this because
-    //     // we want a positive value when we pull to the left. Xbox controllers
-    //     // return positive values when you pull to the right by default.
-    //     var ySpeed =
-    //         -m_yspeedLimiter.calculate(MathUtil.applyDeadband(m_controller.getLeftX(), 0.02))
-    //             * 3.0;
-
-    //     // Get the rate of angular rotation. We are inverting this because we want a
-    //     // positive value when we pull to the left (remember, CCW is positive in
-    //     // mathematics). Xbox controllers return positive values when you pull to
-    //     // the right by default.
-    //     var rot =
-    //         -m_rotLimiter.calculate(MathUtil.applyDeadband(m_controller.getRightX(), 0.02))
-    //             * Math.PI;
-
-    //     // while the A-button is pressed, overwrite some of the driving values with the output of
-    // our limelight methods
-    //     if(m_controller.getAButton())
-    //     {
-    //         final var rot_limelight = limelight_aim_proportional();
-    //         rot = rot_limelight;
-
-    //         final var forward_limelight = limelight_range_proportional();
-    //         xSpeed = forward_limelight;
-
-    //         //while using Limelight, turn off field-relative driving.
-    //         fieldRelative = false;
-    //     }
-    // }
-    // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
 

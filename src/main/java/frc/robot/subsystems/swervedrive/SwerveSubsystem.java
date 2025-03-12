@@ -19,6 +19,7 @@ import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -102,7 +103,7 @@ public class SwerveSubsystem extends SubsystemBase {
         //    swerveDrive.pushOffsetsToEncoders(); // Set the absolute encoder to be used over the
         // internal encoder and push the offsets onto it. Throws warning if not possible
         if (visionDriveTest) {
-            setupPhotonVision();
+            updateVisionOdometry();
             // Stop the odometry thread if we are using vision that way we can synchronize updates better.
             swerveDrive.stopOdometryThread();
         }
@@ -124,18 +125,20 @@ public class SwerveSubsystem extends SubsystemBase {
                 new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)), Rotation2d.fromDegrees(0)));
     }
 
-    /** Setup the photon vision class. */
-    public void setupPhotonVision() {
-        vision = new Vision(swerveDrive::getPose, swerveDrive.field);
+    // /** Setup the photon vision class. */
+    // public void setupPhotonVision() {
+    //     vision = new Vision(swerveDrive::getPose, swerveDrive.field);
+    // }
+    public void updateVisionOdometry() {
+        LimelightHelpers.PoseEstimate limelightMeasurement = LimelightHelpers.getBotPoseEstimate_wpiBlue("limelight");
+        if(limelightMeasurement.tagCount >= 2) {
+            swerveDrive.addVisionMeasurement(limelightMeasurement.pose, limelightMeasurement.timestampSeconds, VecBuilder.fill(.7,.7,9999999));
+        }
     }
-
+    
     @Override
     public void periodic() {
-        // When vision is enabled we must manually update odometry in SwerveDrive
-        if (visionDriveTest) {
-            swerveDrive.updateOdometry();
-            vision.updatePoseEstimation(swerveDrive);
-        }
+        updateVisionOdometry();
     }
 
     @Override
@@ -437,21 +440,6 @@ public class SwerveSubsystem extends SubsystemBase {
      *     field/robot relativity.
      * @param fieldRelative Drive mode. True for field-relative, false for robot-relative.
      */
-    double limelight_aim_proportional() {
-        double kP = 0.035;
-        double targetingAngularVelocity = LimelightHelpers.getTX("limelight") * kP;
-        targetingAngularVelocity *= swerveDrive.getMaximumChassisAngularVelocity();
-        targetingAngularVelocity *= -1.0;
-        return targetingAngularVelocity;
-    }
-
-    double limelight_range_proportional() {
-        double kP = .1;
-        double targetingForwardSpeed = LimelightHelpers.getTY("limelight") * kP;
-        targetingForwardSpeed *= swerveDrive.getMaximumChassisVelocity();
-        targetingForwardSpeed *= -1.0;
-        return targetingForwardSpeed;
-    }
 
     public void drive(Translation2d translation, double rotation, boolean fieldRelative) {
 
@@ -470,7 +458,6 @@ public class SwerveSubsystem extends SubsystemBase {
     public void driveFieldOriented(ChassisSpeeds velocity) {
         swerveDrive.driveFieldOriented(velocity);
     }
-
     /**
      * Drive the robot given a chassis field oriented velocity.
      *
@@ -696,4 +683,5 @@ public class SwerveSubsystem extends SubsystemBase {
     public SwerveDrive getSwerveDrive() {
         return swerveDrive;
     }
+    
 }
