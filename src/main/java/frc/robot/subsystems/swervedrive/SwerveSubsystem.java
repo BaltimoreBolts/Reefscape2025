@@ -142,7 +142,9 @@ public class SwerveSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        updateVisionOdometry();
+        if (visionDriveTest) {
+            swerveDrive.updateOdometry();
+        }
     }
 
     @Override
