@@ -134,6 +134,7 @@ public final class Constants {
         public static final double kShooterSpeed = 1.0;
 
         public enum ScoringTarget {
+            L1,
             L2,
             L3,
             L4
@@ -150,9 +151,8 @@ public final class Constants {
         public static final double kShooterSpeed = 1.0;
 
         public enum ScoringTarget {
-            L2,
-            L3,
-            L4
+            INTAKE_ALGAE,
+            STOW_ALGAE
         }
     }
 }

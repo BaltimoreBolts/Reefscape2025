@@ -7,6 +7,7 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
@@ -26,7 +27,7 @@ public class AlgaeSubsystem extends SubsystemBase {
     SparkBaseConfig motor1Config = new SparkMaxConfig();
     SparkBaseConfig motor2Config = new SparkMaxConfig();
     private ElevatorState m_setPoint;
-    private ScoringTarget scoringTarget = ScoringTarget.L4;
+    private ScoringTarget scoringTarget = ScoringTarget.INTAKE_ALGAE;
 
     private final double speedModifier = 0.0;
 
@@ -34,7 +35,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 
         motor1Config.inverted(false).idleMode(IdleMode.kCoast);
         motor2Config.inverted(false).idleMode(IdleMode.kBrake);
-
+        motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.1, 0.0, 0.0);
         m_motor1.configure(
                 motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
         m_motor2.configure(

@@ -179,15 +179,13 @@ public class RobotContainer {
                 .and(isTest.negate())
                 .whileTrue(
                         drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-
-        // driverController.start().and(isTest.negate()).whileTrue(Commands.none());
-        // driverController.back().and(isTest.negate()).whileTrue(Commands.none());
         driverController
                 .leftBumper()
                 .and(isTest.negate())
                 .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
         driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
         driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
+
         // Operator Controls
         var operatorLeftStickY = new Trigger(
                 () -> Math.abs(operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
