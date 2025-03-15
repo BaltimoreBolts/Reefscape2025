@@ -30,6 +30,8 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -67,6 +69,8 @@ public class SwerveSubsystem extends SubsystemBase {
     private final boolean visionDriveTest = false;
     /** PhotonVision class to keep an accurate odometry. */
     private Vision vision;
+
+    private final Field2d m_field = new Field2d();
 
     /**
      * Initialize {@link SwerveDrive} with the directory provided.
@@ -123,6 +127,7 @@ public class SwerveSubsystem extends SubsystemBase {
                 controllerCfg,
                 Constants.MAX_SPEED,
                 new Pose2d(new Translation2d(Meter.of(2), Meter.of(0)), Rotation2d.fromDegrees(0)));
+        SmartDashboard.putData("Field", m_field);
     }
 
     // /** Setup the photon vision class. */
@@ -145,6 +150,7 @@ public class SwerveSubsystem extends SubsystemBase {
         if (visionDriveTest) {
             swerveDrive.updateOdometry();
         }
+        m_field.setRobotPose(getPose());
     }
 
     @Override

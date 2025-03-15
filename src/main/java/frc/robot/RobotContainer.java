@@ -47,7 +47,7 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
     private ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
     private ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-    private SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(null);
+    // private SwerveSubsystem m_swerveSubsystem = new SwerveSubsystem(null);
     private final SendableChooser<Command> autoChooser;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
