@@ -104,6 +104,9 @@ public final class Constants {
         public enum ElevatorState { // 2 enc values per inch
             ZERO(0.0),
             RESTING(1.0),
+            // TODO: maybe add new constant or rename to be more general
+            INTAKE_ALGAE(4.0), // lazy add to elevator
+            STOW_ALGAE(0.0), // lazy add to elevator
             SCORE_L1(20.0), // 10inch travel; put bottom edge of coral at 20in off ground
             SCORE_L2(40.0), // 20inch travel; put center of coral at 32in off ground
             SCORE_L3(0.0),
@@ -126,6 +129,22 @@ public final class Constants {
 
         public static final int kShooterRightPort = 12;
         public static final int kShooterLeftPort = 13;
+
+        // set speed?
+        public static final double kShooterSpeed = 1.0;
+
+        public enum ScoringTarget {
+            L2,
+            L3,
+            L4
+        }
+    }
+
+    public static final class AlgaeConstants {
+        // set ports
+
+        public static final int kAlgaeRightPort = 14; // currently as pivot
+        public static final int kAlgaeLeftPort = 15; // currently as intake
 
         // set speed?
         public static final double kShooterSpeed = 1.0;
