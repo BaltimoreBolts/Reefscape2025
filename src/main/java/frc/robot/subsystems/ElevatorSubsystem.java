@@ -69,7 +69,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     }
 
     public void printSpeed() {
-        SmartDashboard.putNumber("arm speed 1", m_motor1.getAppliedOutput());
+        SmartDashboard.putNumber("elevator speed 1", m_motor1.getAppliedOutput());
     }
 
     @Override

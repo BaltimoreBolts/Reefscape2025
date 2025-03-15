@@ -32,10 +32,10 @@ import frc.robot.commands.scoring.ScoreL1Command;
 import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
 import frc.robot.commands.shooter.ShooterSpeedCommand;
+import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import frc.robot.subsystems.AlgaeSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
 
@@ -48,7 +48,7 @@ import swervelib.SwerveInputStream;
 public class RobotContainer {
     private ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
     private ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-    private AlgaeSubsystem m_AlgaeSubsystem = new AlgaeSubsystem(); 
+    private AlgaeSubsystem m_AlgaeSubsystem = new AlgaeSubsystem();
     private final SendableChooser<Command> autoChooser;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed

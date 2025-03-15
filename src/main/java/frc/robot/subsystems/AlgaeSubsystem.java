@@ -59,8 +59,12 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     public void setPosition(ElevatorState targetState) {
         m_setPoint = targetState;
-        SmartDashboard.putNumber("elevatorsetposition", targetState.getPosition());
+        SmartDashboard.putNumber("algaearmsetposition", targetState.getPosition());
         m_piController1.setReference(targetState.getPosition(), ControlType.kPosition);
+    }
+
+    public void printSpeed() {
+        SmartDashboard.putNumber("algaearm speed 1", m_motor1.getAppliedOutput());
     }
 
     public double getClosedLoopError() {
@@ -79,7 +83,7 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
-        //printTarget();
+        // printTarget();
     }
 
     public void setSpeed(double speed) {

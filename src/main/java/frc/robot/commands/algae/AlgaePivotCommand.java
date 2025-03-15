@@ -33,7 +33,7 @@ public class AlgaePivotCommand extends Command {
 
         SmartDashboard.putNumber("Arm loops within threshold", loopsWithinThreshold);
         System.out.println("arm loops at position: " + loopsWithinThreshold);
-        elevatorSubsystem.printSpeed();
+        algaeSubsystem.printSpeed();
     }
 
     @Override
