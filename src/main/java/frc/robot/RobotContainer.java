@@ -31,6 +31,7 @@ import frc.robot.commands.elevator.ElevatorSpeedCommand;
 import frc.robot.commands.scoring.ScoreL1Command;
 import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
+import frc.robot.commands.scoring.ScoreL4Command;
 import frc.robot.commands.shooter.ShooterSpeedCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -46,9 +47,16 @@ import swervelib.SwerveInputStream;
  * subsystems, commands, and trigger mappings) should be declared here.
  */
 public class RobotContainer {
+    // Subsystem instantiation    
     private ElevatorSubsystem m_elevatorSubsystem = new ElevatorSubsystem();
     private ShooterSubsystem m_shooterSubsystem = new ShooterSubsystem();
-    private AlgaeSubsystem m_AlgaeSubsystem = new AlgaeSubsystem();
+    private AlgaeSubsystem m_algaeSubsystem = new AlgaeSubsystem();
+
+    // Command instantiation
+    private ScoreL1Command m_scoreL1Command = new ScoreL1Command(m_elevatorSubsystem, m_shooterSubsystem); 
+    private ScoreL2Command m_scoreL2Command = new ScoreL2Command(m_elevatorSubsystem, m_shooterSubsystem);
+    private ScoreL3Command m_scoreL3Command = new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem);
+    private ScoreL4Command m_scoreL4Command = new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem);
     private final SendableChooser<Command> autoChooser;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -109,7 +117,10 @@ public class RobotContainer {
         DriverStation.silenceJoystickConnectionWarning(true);
 
         // Named command registration for PathPlanner Autos
-        NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+        NamedCommands.registerCommand("score L1", m_scoreL1Command);
+        NamedCommands.registerCommand("score L2", m_scoreL2Command);
+        NamedCommands.registerCommand("score L3", m_scoreL3Command);
+        NamedCommands.registerCommand("score L4", m_scoreL4Command);
     }
 
     /**
