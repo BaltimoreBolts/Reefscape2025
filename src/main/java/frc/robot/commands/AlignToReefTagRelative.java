@@ -50,16 +50,16 @@ public class AlignToReefTagRelative extends Command {
         tagID = LimelightHelpers.getFiducialID("");
 
         // Change the camera pose realtive to robot center (x forward, y left, z up, degrees)
-        // LimelightHelpers.setCameraPose_RobotSpace(
-        //         "",
-        //         // Inches
-        //         Units.inchesToMeters(5.0), // Forward Offset
-        //         Units.inchesToMeters(11.0), // Side Offset
-        //         Units.inchesToMeters(9.0), // Height Offset
-        //         // Degrees
-        //         0.0,
-        //         20.0,
-        //         15.0);
+        LimelightHelpers.setCameraPose_RobotSpace(
+                "",
+                // Inches
+                Units.inchesToMeters(0.0), // Forward Offset
+                Units.inchesToMeters(0.0), // Side Offset
+                Units.inchesToMeters(0.0), // Height Offset
+                // Degrees
+                0.0,
+                0.0,
+                0.0);
     }
 
     @Override
