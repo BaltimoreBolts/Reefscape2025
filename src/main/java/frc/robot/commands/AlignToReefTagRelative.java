@@ -6,6 +6,7 @@ package frc.robot.commands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -47,6 +48,18 @@ public class AlignToReefTagRelative extends Command {
         yController.setTolerance(Constants.Y_TOLERANCE_REEF_ALIGNMENT);
 
         tagID = LimelightHelpers.getFiducialID("");
+
+        // Change the camera pose realtive to robot center (x forward, y left, z up, degrees)
+        LimelightHelpers.setCameraPose_RobotSpace(
+                "",
+                // Inches
+                Units.inchesToMeters(5.0), // Forward Offset
+                Units.inchesToMeters(11.0), // Side Offset
+                Units.inchesToMeters(9.0), // Height Offset
+                // Degrees
+                0.0,
+                20.0,
+                15.0);
     }
 
     @Override
