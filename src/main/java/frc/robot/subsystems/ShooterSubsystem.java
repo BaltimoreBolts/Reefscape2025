@@ -7,21 +7,21 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.SparkBaseConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.Constants.ShooterConstants.ScoringTarget;
+import frc.robot.Constants.inputConstants.digitalInputConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
     private final SparkMax m_motor1 =
             new SparkMax(ShooterConstants.kShooterLeftPort, MotorType.kBrushless);
     private final SparkMax m_motor2 =
             new SparkMax(ShooterConstants.kShooterRightPort, MotorType.kBrushless);
+    private final DigitalInput m_firstSensor = new DigitalInput(digitalInputConstants.kFirstSensor);
+    private final DigitalInput m_secondSensor = new DigitalInput(digitalInputConstants.kSecondSensor);
 
     SparkBaseConfig motor1Config = new SparkMaxConfig();
     SparkBaseConfig motor2Config = new SparkMaxConfig();
-
-    private ScoringTarget scoringTarget = ScoringTarget.L4;
 
     private final double speedModifier = 0.0;
 
@@ -36,28 +36,20 @@ public class ShooterSubsystem extends SubsystemBase {
                 motor2Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    public void setScoringTarget(ScoringTarget target) {
-        scoringTarget = target;
+    public boolean getFirstDigitalInput() {
+        return m_firstSensor.get();
     }
 
-    public ScoringTarget getScoringTarget() {
-        return scoringTarget;
+    public boolean getSecondDigitalInput() {
+        return m_secondSensor.get();
     }
 
     public void stopShooter() {
         setSpeed(0.0);
     }
 
-    public void printTarget() {
-        SmartDashboard.putBoolean("targetL2", scoringTarget == ScoringTarget.L2);
-        SmartDashboard.putBoolean("targetL3", scoringTarget == ScoringTarget.L3);
-        SmartDashboard.putBoolean("targetL4", scoringTarget == ScoringTarget.L4);
-    }
-
     @Override
-    public void periodic() {
-        printTarget();
-    }
+    public void periodic() {}
 
     public void setSpeed(double speed) {
         double speedToSet = speed + speedModifier;

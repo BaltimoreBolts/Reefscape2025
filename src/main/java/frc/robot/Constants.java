@@ -17,6 +17,13 @@ import swervelib.math.Matter;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+    public static class inputConstants {
+        public static final class digitalInputConstants {
+            public static final int kFirstSensor = 8;
+            public static final int kSecondSensor = 9;
+        }
+    }
+
     public static class ControllerConstants {
         public static final double kDeadzone = .1;
         public static final double kTriggerDeadzone = .05;

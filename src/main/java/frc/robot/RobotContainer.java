@@ -33,6 +33,7 @@ import frc.robot.commands.scoring.ScoreL1Command;
 import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
 import frc.robot.commands.scoring.ScoreL4Command;
+import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.commands.shooter.ShooterSpeedCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -196,11 +197,15 @@ public class RobotContainer {
                 .whileTrue(
                         drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
         driverController
-                .leftBumper()
+                .povRight()
                 .and(isTest.negate())
                 .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        driverController.povRight().onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
-        driverController.povLeft().onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
+        driverController
+                .rightBumper()
+                .onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
+        driverController
+                .leftBumper()
+                .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
         // Operator Controls
         var operatorLeftStickY = new Trigger(
@@ -219,9 +224,10 @@ public class RobotContainer {
         new JoystickButton(operatorController, ControllerConstants.Button.kX)
                 .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
 
-        // new JoystickButton(operatorController, ControllerConstants.Button.kX)
-        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.35))
-        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
+                .whileTrue(new IntakeCommand(m_shooterSubsystem));
+        new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.5));
     }
 
     /**
