@@ -33,7 +33,7 @@ import frc.robot.commands.scoring.ScoreL1Command;
 import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
 import frc.robot.commands.scoring.ScoreL4Command;
-import frc.robot.commands.shooter.IntakeCommand;
+//import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.commands.shooter.ShooterSpeedCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -224,8 +224,8 @@ public class RobotContainer {
         new JoystickButton(operatorController, ControllerConstants.Button.kX)
                 .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
 
-        new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
-                .whileTrue(new IntakeCommand(m_shooterSubsystem));
+        // new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
+        //         .whileTrue(new IntakeCommand(m_shooterSubsystem));
         new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
                 .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.5));
     }
