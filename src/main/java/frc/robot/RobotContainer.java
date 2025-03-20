@@ -227,7 +227,11 @@ public class RobotContainer {
         // new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
         //         .whileTrue(new IntakeCommand(m_shooterSubsystem));
         new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.5));
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
+        new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
     }
 
     /**
