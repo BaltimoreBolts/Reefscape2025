@@ -8,7 +8,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -27,7 +26,6 @@ import frc.robot.Constants.ControllerConstants.Axis;
 import frc.robot.Constants.ControllerConstants.DPad;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants.ScoringTarget;
-import frc.robot.Constants.AlgaeConstants.AlgaeScoringTarget;
 import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.elevator.ElevatorSpeedCommand;
 import frc.robot.commands.elevator.ElevatorZeroPositionCommand;
@@ -195,9 +193,9 @@ public class RobotContainer {
          * | DRIVER CONTROLS |
          * =========================================
          */
-        
+
         // Scores score state set by operator
-        driverController.a().onTrue(new ScoreCommand(m_elevatorSubsystem, m_shooterSubsystem)); 
+        driverController.a().onTrue(new ScoreCommand(m_elevatorSubsystem, m_shooterSubsystem));
 
         // Zero gyro
         driverController.y().and(isTest.negate()).onTrue((Commands.runOnce(drivebase::zeroGyro)));
@@ -210,12 +208,13 @@ public class RobotContainer {
         //         .b()
         //         .and(isTest.negate())
         //         .whileTrue(
-        //                 drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
+        //                 drivebase.driveToPose(new Pose2d(new Translation2d(4, 4),
+        // Rotation2d.fromDegrees(0))));
         // driverController
         //         .povRight()
         //         .and(isTest.negate())
         //         .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-        
+
         // Auto-aligns
         driverController
                 .rightBumper()
@@ -237,9 +236,14 @@ public class RobotContainer {
                 m_elevatorSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kLeftY)));
 
         // Manual elevator positions
-        new JoystickButton(operatorController, ControllerConstants.Button.kLeftMenu) // This command zeros the elevator position
+        new JoystickButton(
+                        operatorController,
+                        ControllerConstants.Button.kLeftMenu) // This command zeros the elevator position
                 .whileTrue(new ElevatorZeroPositionCommand(m_elevatorSubsystem));
-        new JoystickButton(operatorController, ControllerConstants.Button.kRightMenu) // This commmand goes to the zero elevator position
+        new JoystickButton(
+                        operatorController,
+                        ControllerConstants.Button
+                                .kRightMenu) // This commmand goes to the zero elevator position
                 .whileTrue(new ZeroCommand(m_elevatorSubsystem, m_shooterSubsystem));
         new JoystickButton(operatorController, ControllerConstants.Button.kA)
                 .whileTrue(new ScoreL1Command(m_elevatorSubsystem, m_shooterSubsystem));
@@ -261,16 +265,16 @@ public class RobotContainer {
         new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
                 .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
-        
+
         // Set scoring target
         new Trigger(() -> operatorController.getPOV() == DPad.kDown)
-                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L1)); 
+                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L1));
         new Trigger(() -> operatorController.getPOV() == DPad.kRight)
-                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L2)); 
+                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L2));
         new Trigger(() -> operatorController.getPOV() == DPad.kUp)
-                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L3)); 
+                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L3));
         new Trigger(() -> operatorController.getPOV() == DPad.kLeft)
-                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L4)); 
+                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L4));
     }
 
     /**
