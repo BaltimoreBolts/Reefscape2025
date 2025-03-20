@@ -49,6 +49,13 @@ public final class Constants {
             public static final int kLeftTriggerButton = 9;
             public static final int kRightTriggerButton = 10;
         }
+
+        public static final class DPad {
+            public static final int kUp = 0;
+            public static final int kRight = 90;
+            public static final int kDown = 180;
+            public static final int kLeft = 270;
+        }
     }
 
     public static final double ROBOT_MASS = (148 - 20.3) * 0.453592; // 32lbs * kg per pound
@@ -157,7 +164,7 @@ public final class Constants {
         // set speed?
         public static final double kShooterSpeed = 1.0;
 
-        public enum ScoringTarget {
+        public enum AlgaeScoringTarget {
             INTAKE_ALGAE,
             STOW_ALGAE
         }

@@ -14,7 +14,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeConstants;
-import frc.robot.Constants.AlgaeConstants.ScoringTarget;
+import frc.robot.Constants.AlgaeConstants.AlgaeScoringTarget;
 import frc.robot.Constants.ElevatorConstants.ElevatorState;
 
 public class AlgaeSubsystem extends SubsystemBase {
@@ -27,8 +27,9 @@ public class AlgaeSubsystem extends SubsystemBase {
     SparkBaseConfig motor1Config = new SparkMaxConfig();
     SparkBaseConfig motor2Config = new SparkMaxConfig();
     private ElevatorState m_setPoint;
-    private ScoringTarget scoringTarget = ScoringTarget.INTAKE_ALGAE;
 
+    // Defaults
+    private AlgaeScoringTarget scoringTarget = AlgaeScoringTarget.STOW_ALGAE;
     private final double speedModifier = 0.0;
 
     public AlgaeSubsystem() {
@@ -42,11 +43,11 @@ public class AlgaeSubsystem extends SubsystemBase {
                 motor2Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
-    public void setScoringTarget(ScoringTarget target) {
+    public void setScoringTarget(AlgaeScoringTarget target) {
         scoringTarget = target;
     }
 
-    public ScoringTarget getScoringTarget() {
+    public AlgaeScoringTarget getScoringTarget() {
         return scoringTarget;
     }
 

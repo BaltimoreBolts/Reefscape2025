@@ -53,13 +53,13 @@ public class AlignToReefTagRelative extends Command {
         LimelightHelpers.setCameraPose_RobotSpace(
                 "",
                 // Inches
-                Units.inchesToMeters(0.0), // Forward Offset
-                Units.inchesToMeters(0.0), // Side Offset
-                Units.inchesToMeters(0.0), // Height Offset
+                Units.inchesToMeters(5.0), // Forward Offset
+                Units.inchesToMeters(11.0), // Side Offset
+                Units.inchesToMeters(9.0), // Height Offset
                 // Degrees
                 0.0,
-                0.0,
-                0.0);
+                20.0,
+                15.0);
     }
 
     @Override

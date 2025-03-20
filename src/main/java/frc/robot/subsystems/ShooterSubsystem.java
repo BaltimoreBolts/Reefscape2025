@@ -10,6 +10,7 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.Constants.ShooterConstants.ScoringTarget;
 import frc.robot.Constants.inputConstants.digitalInputConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
@@ -23,7 +24,9 @@ public class ShooterSubsystem extends SubsystemBase {
     SparkBaseConfig motor1Config = new SparkMaxConfig();
     SparkBaseConfig motor2Config = new SparkMaxConfig();
 
+    // Defaults
     private final double speedModifier = 0.0;
+    private ScoringTarget scoringTarget = ScoringTarget.L1;
 
     public ShooterSubsystem() {
 
@@ -36,6 +39,7 @@ public class ShooterSubsystem extends SubsystemBase {
                 motor2Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
+    // Methods for sensors
     public boolean getFirstDigitalInput() {
         return m_firstSensor.get();
     }
@@ -44,6 +48,16 @@ public class ShooterSubsystem extends SubsystemBase {
         return m_secondSensor.get();
     }
 
+    // Scoring target methods
+    public void setScoringTarget(ScoringTarget target) {
+        scoringTarget = target;
+    }
+
+    public ScoringTarget getScoringTarget() {
+        return scoringTarget;
+    }
+
+    // More shooter methods
     public void stopShooter() {
         setSpeed(0.0);
     }
@@ -59,15 +73,4 @@ public class ShooterSubsystem extends SubsystemBase {
         m_motor1.set(speedToSet);
         m_motor2.set(speedToSet);
     }
-
-    // public void setSpeed(double topSpeed, double bottomSpeed) {
-    //       double speedToSetTop = topSpeed + speedModifier;
-    //   if (topSpeed == 0) { speedToSetTop = 0; }
-    //       double speedToSetBottom = bottomSpeed + speedModifier;
-    //   if (bottomSpeed == 0) { speedToSetBottom = 0; }
-    //     m_motor1.set(sparkMax.getAppliedOutput(), speedToSetTop);
-    //     m_motor2.set(sparkMax.getAppliedOutput(), speedToSetBottom);
-
-    // }
-
 }
