@@ -10,27 +10,35 @@ import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
+
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ElevatorConstants.ElevatorState;
+import frc.robot.commands.elevator.ElevatorPositionCommand;
 
 public class ElevatorSubsystem extends SubsystemBase {
+     
     private final SparkMax m_motor1 =
             new SparkMax(ElevatorConstants.kElevatorLeft, MotorType.kBrushless);
     private final SparkMax m_motor2 =
             new SparkMax(ElevatorConstants.kElevatorRight, MotorType.kBrushless);
     private final RelativeEncoder m_encoder = m_motor1.getEncoder();
     private final SparkClosedLoopController m_piController1 = m_motor1.getClosedLoopController();
-
+    private final TrapezoidProfile m_profile = 
+            new TrapezoidProfile(new TrapezoidProfile.Constraints(1.75, 1));
+    private TrapezoidProfile.State m_goal = new TrapezoidProfile.State(); 
+    private TrapezoidProfile.State m_State = new TrapezoidProfile.State();
+ 
     SparkMaxConfig motor1Config = new SparkMaxConfig();
     SparkMaxConfig motor2Config = new SparkMaxConfig();
 
     private ElevatorState m_setPoint;
 
     public ElevatorSubsystem() {
-        // var motor2 = new SparkMax(ElevatorConstants.kElevatorRight, MotorType.kBrushless);
 
         motor1Config.inverted(false).idleMode(IdleMode.kBrake);
         motor2Config.inverted(false).follow(ElevatorConstants.kElevatorLeft).idleMode(IdleMode.kBrake);
@@ -59,7 +67,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     public void setPosition(ElevatorState targetState) {
         m_setPoint = targetState;
         SmartDashboard.putNumber("elevatorsetposition", targetState.getPosition());
-        m_piController1.setReference(targetState.getPosition(), ControlType.kPosition);
+        m_goal = new TrapezoidProfile.State(targetState.getPosition(), 0);
     }
 
     public void printPosition() {
@@ -74,6 +82,8 @@ public class ElevatorSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        m_State = m_profile.calculate(0.02, m_State, m_goal); 
+        m_piController1.setReference(m_State.position, ControlType.kPosition); 
         printPosition();
         printSpeed();
     }

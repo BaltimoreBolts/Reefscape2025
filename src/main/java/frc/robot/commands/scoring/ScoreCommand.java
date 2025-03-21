@@ -13,7 +13,7 @@ public class ScoreCommand extends InstantCommand {
         this.ElevatorSubsystem = ElevatorSubsystem;
         this.shooterSubsystem = shooterSubsystem;
     }
-
+    
     @Override
     public void execute() {
         switch (shooterSubsystem.getScoringTarget()) {
