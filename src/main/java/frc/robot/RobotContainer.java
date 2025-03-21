@@ -223,8 +223,10 @@ public class RobotContainer {
                 .leftBumper()
                 .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
-        driverController.leftTrigger().whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3)); 
-        driverController.rightTrigger().whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3));
+        driverController.leftTrigger().whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.45))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        driverController.rightTrigger().whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.45))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
         /*
          * =========================================
          * | OPERATOR CONTROLS |
