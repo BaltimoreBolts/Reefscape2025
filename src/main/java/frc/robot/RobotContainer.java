@@ -223,15 +223,22 @@ public class RobotContainer {
                 .leftBumper()
                 .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
+        // Intake and outtake
         driverController
                 .leftTrigger()
                 .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
         driverController
                 .rightTrigger()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -
-                0.3))
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+
+        // TODO: want to change to driver and replace with current intake
+        // Intake coral
+        // new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
+        //         .whileTrue(new IntakeCommand(m_shooterSubsystem));
+
+
         /*
          * =========================================
          * | OPERATOR CONTROLS |
@@ -239,10 +246,10 @@ public class RobotContainer {
          */
 
         // Manual movement of the elevator
-        var operatorLeftStickY = new Trigger(
-                () -> Math.abs(operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
-        operatorLeftStickY.whileTrue(new ElevatorSpeedCommand(
-                m_elevatorSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kLeftY)));
+        var operatorRightStickY = new Trigger(
+                () -> Math.abs(operatorController.getRawAxis(Axis.kRightY)) > ControllerConstants.kDeadzone);
+        operatorRightStickY.whileTrue(new ElevatorSpeedCommand(
+                m_elevatorSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kRightY)));
 
         // Manual elevator positions
         new JoystickButton(
@@ -262,18 +269,6 @@ public class RobotContainer {
                 .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
         new JoystickButton(operatorController, ControllerConstants.Button.kX)
                 .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
-
-        // Intake coral
-        // new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
-        //         .whileTrue(new IntakeCommand(m_shooterSubsystem));
-
-        // Intake and outtake coral manual
-        // new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
-        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3))
-        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
-        // new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
-        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3))
-        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
 
         // Set scoring target
         new Trigger(() -> operatorController.getPOV() == DPad.kDown)
