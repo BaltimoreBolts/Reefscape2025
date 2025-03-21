@@ -122,9 +122,9 @@ public final class Constants {
             INTAKE_ALGAE(4.0), // lazy add to elevator
             STOW_ALGAE(0.0), // lazy add to elevator
             SCORE_L1(20.0), // 10inch travel; put bottom edge of coral at 20in off ground
-            SCORE_L2(30.0), // 20inch travel; put center of coral at 32in off ground
+            SCORE_L2(31.0), // 20inch travel; put center of coral at 32in off ground
             SCORE_L3(49.0),
-            SCORE_L4(80.0);
+            SCORE_L4(82.0);
 
             final double position;
 
