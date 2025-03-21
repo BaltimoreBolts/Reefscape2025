@@ -15,6 +15,7 @@ public class ScoreL4Command extends SequentialCommandGroup {
         addCommands(new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.SCORE_L4)
                 .alongWith(new StopShooterCommand(shooterSubsystem), Commands.print("scoring in L4"))
                 .andThen(new ShooterSpeedCommand(shooterSubsystem, -0.3))
-                .andThen(new StopElevatorCommand(elevatorSubsystem)));
+                .withTimeout(1.0)
+                .andThen(new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.ZERO)));
     }
 }

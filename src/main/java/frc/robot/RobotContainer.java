@@ -198,7 +198,7 @@ public class RobotContainer {
         driverController.a().onTrue(new ScoreCommand(m_elevatorSubsystem, m_shooterSubsystem));
 
         // Zero gyro
-        driverController.y().and(isTest.negate()).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        driverController.povLeft().and(isTest.negate()).onTrue((Commands.runOnce(drivebase::zeroGyro)));
 
         // driverController
         //         .x()
@@ -223,6 +223,8 @@ public class RobotContainer {
                 .leftBumper()
                 .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
+        driverController.leftTrigger().whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3)); 
+        driverController.rightTrigger().whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3));
         /*
          * =========================================
          * | OPERATOR CONTROLS |
@@ -259,12 +261,12 @@ public class RobotContainer {
         //         .whileTrue(new IntakeCommand(m_shooterSubsystem));
 
         // Intake and outtake coral manual
-        new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3))
-                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
-        new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3))
-                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
+        // new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
+        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3))
+        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
+        // new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
+        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3))
+        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
 
         // Set scoring target
         new Trigger(() -> operatorController.getPOV() == DPad.kDown)

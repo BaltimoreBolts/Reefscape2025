@@ -14,7 +14,7 @@ public class ZeroCommand extends SequentialCommandGroup {
         addCommands(
                 new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.ZERO)
                         .alongWith(new StopShooterCommand(shooterSubsystem), Commands.print("scoring in L1"))
-                        .withTimeout(1.0),
-                new StopElevatorCommand(elevatorSubsystem));
+                        .withTimeout(1.0)
+                );
     }
 }
