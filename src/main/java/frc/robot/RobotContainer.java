@@ -8,7 +8,6 @@ import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
@@ -24,16 +23,20 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Axis;
+import frc.robot.Constants.ControllerConstants.DPad;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.Constants.ShooterConstants.ScoringTarget;
 import frc.robot.commands.AlignToReefTagRelative;
-// import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.elevator.ElevatorSpeedCommand;
 import frc.robot.commands.elevator.ElevatorZeroPositionCommand;
+import frc.robot.commands.scoring.ScoreCommand;
 import frc.robot.commands.scoring.ScoreL1Command;
 import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
 import frc.robot.commands.scoring.ScoreL4Command;
-//import frc.robot.commands.shooter.IntakeCommand;
+import frc.robot.commands.scoring.ZeroCommand;
+import frc.robot.commands.shooter.SetScoringTargetCommand;
+// import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.commands.shooter.ShooterSpeedCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -185,21 +188,34 @@ public class RobotContainer {
         //    Normal Mode Commands
         // **************************
 
-        // Driver Controls
-        driverController.a().and(isTest.negate()).onTrue((Commands.runOnce(drivebase::zeroGyro)));
-        driverController
-                .x()
-                .and(isTest.negate())
-                .onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-        driverController
-                .b()
-                .and(isTest.negate())
-                .whileTrue(
-                        drivebase.driveToPose(new Pose2d(new Translation2d(4, 4), Rotation2d.fromDegrees(0))));
-        driverController
-                .povRight()
-                .and(isTest.negate())
-                .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        /*
+         * =========================================
+         * | DRIVER CONTROLS |
+         * =========================================
+         */
+
+        // Scores score state set by operator
+        driverController.a().onTrue(new ScoreCommand(m_elevatorSubsystem, m_shooterSubsystem));
+
+        // Zero gyro
+        driverController.povLeft().and(isTest.negate()).onTrue((Commands.runOnce(drivebase::zeroGyro)));
+
+        // driverController
+        //         .x()
+        //         .and(isTest.negate())
+        //         .onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+        // driverController
+        //         .b()
+        //         .and(isTest.negate())
+        //         .whileTrue(
+        //                 drivebase.driveToPose(new Pose2d(new Translation2d(4, 4),
+        // Rotation2d.fromDegrees(0))));
+        // driverController
+        //         .povRight()
+        //         .and(isTest.negate())
+        //         .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+
+        // Auto-aligns
         driverController
                 .rightBumper()
                 .onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
@@ -207,14 +223,32 @@ public class RobotContainer {
                 .leftBumper()
                 .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
-        // Operator Controls
+        driverController.leftTrigger().whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.45))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        driverController.rightTrigger().whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.45))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        /*
+         * =========================================
+         * | OPERATOR CONTROLS |
+         * =========================================
+         */
+
+        // Manual movement of the elevator
         var operatorLeftStickY = new Trigger(
                 () -> Math.abs(operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
         operatorLeftStickY.whileTrue(new ElevatorSpeedCommand(
                 m_elevatorSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kLeftY)));
 
-        new JoystickButton(operatorController, ControllerConstants.Button.kLeftMenu)
+        // Manual elevator positions
+        new JoystickButton(
+                        operatorController,
+                        ControllerConstants.Button.kLeftMenu) // This command zeros the elevator position
                 .whileTrue(new ElevatorZeroPositionCommand(m_elevatorSubsystem));
+        new JoystickButton(
+                        operatorController,
+                        ControllerConstants.Button
+                                .kRightMenu) // This commmand goes to the zero elevator position
+                .whileTrue(new ZeroCommand(m_elevatorSubsystem, m_shooterSubsystem));
         new JoystickButton(operatorController, ControllerConstants.Button.kA)
                 .whileTrue(new ScoreL1Command(m_elevatorSubsystem, m_shooterSubsystem));
         new JoystickButton(operatorController, ControllerConstants.Button.kB)
@@ -224,14 +258,27 @@ public class RobotContainer {
         new JoystickButton(operatorController, ControllerConstants.Button.kX)
                 .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
 
+        // Intake coral
         // new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
         //         .whileTrue(new IntakeCommand(m_shooterSubsystem));
-        new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3))
-                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
-        new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3))
-                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
+
+        // Intake and outtake coral manual
+        // new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
+        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3))
+        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
+        // new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
+        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.3))
+        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0.0));
+
+        // Set scoring target
+        new Trigger(() -> operatorController.getPOV() == DPad.kDown)
+                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L1));
+        new Trigger(() -> operatorController.getPOV() == DPad.kRight)
+                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L2));
+        new Trigger(() -> operatorController.getPOV() == DPad.kUp)
+                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L3));
+        new Trigger(() -> operatorController.getPOV() == DPad.kLeft)
+                .onTrue(new SetScoringTargetCommand(m_shooterSubsystem, ScoringTarget.L4));
     }
 
     /**

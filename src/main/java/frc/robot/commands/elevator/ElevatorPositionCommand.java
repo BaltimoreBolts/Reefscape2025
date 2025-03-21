@@ -31,9 +31,9 @@ public class ElevatorPositionCommand extends Command {
             loopsWithinThreshold = 0;
         }
 
-        SmartDashboard.putNumber("Arm loops within threshold", loopsWithinThreshold);
-        System.out.println("arm loops at position: " + loopsWithinThreshold);
-        elevatorSubsystem.printSpeed();
+        // SmartDashboard.putNumber("Arm loops within threshold", loopsWithinThreshold);
+        // System.out.println("arm loops at position: " + loopsWithinThreshold);
+        // elevatorSubsystem.printSpeed();
     }
 
     @Override
