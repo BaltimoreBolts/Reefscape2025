@@ -34,7 +34,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         motor1Config.inverted(false).idleMode(IdleMode.kBrake);
         motor2Config.inverted(false).follow(ElevatorConstants.kElevatorLeft).idleMode(IdleMode.kBrake);
-        motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(10.0, 0.0, 0.0);
+        motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.025, 0, 0.00001);
 
         m_motor1.configure(
                 motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
