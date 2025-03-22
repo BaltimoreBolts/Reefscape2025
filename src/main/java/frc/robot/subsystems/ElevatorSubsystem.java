@@ -1,17 +1,16 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkBase.PersistMode;
 import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.ClosedLoopConfig.FeedbackSensor;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
-
 import edu.wpi.first.math.controller.ElevatorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -84,7 +83,11 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         m_State = m_profile.calculate(0.02, m_State, m_goal);
-        m_piController1.setReference(m_State.position, ControlType.kPosition, ClosedLoopSlot.kSlot0, m_Feedforward.calculate(m_State.velocity));
+        m_piController1.setReference(
+                m_State.position,
+                ControlType.kPosition,
+                ClosedLoopSlot.kSlot0,
+                m_Feedforward.calculate(m_State.velocity));
         printPosition();
         printSpeed();
     }

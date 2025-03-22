@@ -115,8 +115,6 @@ public class RobotContainer {
     public RobotContainer() {
         // Subsystem initialization
 
-        
-
         // Configure the trigger bindings
         configureBindings();
         DriverStation.silenceJoystickConnectionWarning(true);

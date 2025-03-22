@@ -2,7 +2,6 @@ package frc.robot.commands.elevator;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.Constants.ElevatorConstants;
 import frc.robot.Constants.ElevatorConstants.ElevatorState;
 import frc.robot.subsystems.ElevatorSubsystem;
 
@@ -32,15 +31,15 @@ public class ElevatorPositionCommand extends Command {
         //     loopsWithinThreshold = 0;
         // }
 
-        //if (elevatorSubsystem.getPosition() < targetState.getPosition()) {
+        // if (elevatorSubsystem.getPosition() < targetState.getPosition()) {
         //    loopsWithinThreshold++;
-        //} else {
-        //    loopsWithinThreshold = 0; 
-        //}
+        // } else {
+        //    loopsWithinThreshold = 0;
+        // }
         // SmartDashboard.putNumber("Arm loops within threshold", loopsWithinThreshold);
-        //System.out.println("getpos" + elevatorSubsystem.getPosition());
-        //System.out.println("gettarget" +targetState.getPosition());
-        //System.out.println("error" + elevatorSubsystem.getClosedLoopError());
+        // System.out.println("getpos" + elevatorSubsystem.getPosition());
+        // System.out.println("gettarget" +targetState.getPosition());
+        // System.out.println("error" + elevatorSubsystem.getClosedLoopError());
         // elevatorSubsystem.printSpeed();
     }
 
