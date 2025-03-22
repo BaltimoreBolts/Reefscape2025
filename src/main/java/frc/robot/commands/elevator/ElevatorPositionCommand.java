@@ -32,14 +32,14 @@ public class ElevatorPositionCommand extends Command {
         //     loopsWithinThreshold = 0;
         // }
 
-        if (elevatorSubsystem.getPosition() < targetState.getPosition()) {
-            loopsWithinThreshold++;
-        } else {
-            loopsWithinThreshold = 0; 
-        }
+        //if (elevatorSubsystem.getPosition() < targetState.getPosition()) {
+        //    loopsWithinThreshold++;
+        //} else {
+        //    loopsWithinThreshold = 0; 
+        //}
         // SmartDashboard.putNumber("Arm loops within threshold", loopsWithinThreshold);
-        System.out.println("getpos" + elevatorSubsystem.getPosition());
-        System.out.println("gettarget" +targetState.getPosition());
+        //System.out.println("getpos" + elevatorSubsystem.getPosition());
+        //System.out.println("gettarget" +targetState.getPosition());
         //System.out.println("error" + elevatorSubsystem.getClosedLoopError());
         // elevatorSubsystem.printSpeed();
     }

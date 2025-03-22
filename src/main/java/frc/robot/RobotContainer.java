@@ -224,17 +224,17 @@ public class RobotContainer {
 
         // Outtake and intake
         driverController
-                .rightTrigger()
+                .x()
                 .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.2))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
         driverController
-                .leftTrigger()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.3))
+                .rightTrigger()
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.5))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 
         // Adjust coral in end effector
         driverController
-                .x()
+                .leftTrigger()
                 .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.2))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 

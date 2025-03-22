@@ -29,7 +29,7 @@ public class ElevatorSubsystem extends SubsystemBase {
     private final RelativeEncoder m_encoder = m_motor1.getEncoder();
     private final SparkClosedLoopController m_piController1 = m_motor1.getClosedLoopController();
     private final TrapezoidProfile m_profile =
-            new TrapezoidProfile(new TrapezoidProfile.Constraints(50, 50));
+            new TrapezoidProfile(new TrapezoidProfile.Constraints(50, 30));
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State m_State = new TrapezoidProfile.State();
     private final ElevatorFeedforward m_Feedforward = new ElevatorFeedforward(0, 0.85, 0.6);
@@ -43,7 +43,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         motor1Config.inverted(false).idleMode(IdleMode.kBrake);
         motor2Config.inverted(false).follow(ElevatorConstants.kElevatorLeft).idleMode(IdleMode.kBrake);
-        motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(2, 0, 0);
+        motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(1.75, 0, 0);
 
         m_motor1.configure(
                 motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
