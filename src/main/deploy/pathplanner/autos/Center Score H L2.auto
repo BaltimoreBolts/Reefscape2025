@@ -7,13 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "J"
+            "pathName": "H"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "score L1"
+            "name": "score L2"
           }
         }
       ]
