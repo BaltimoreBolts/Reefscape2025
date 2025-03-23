@@ -20,11 +20,11 @@ public class AlgaePivotCommand extends Command {
         double speed =
                 Math.abs(speedSupplier.get()) > ControllerConstants.kDeadzone ? speedSupplier.get() : 0.0;
 
-        algaeSubsystem.setSpeed(speed);
+        algaeSubsystem.armSetSpeed(speed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        algaeSubsystem.setSpeed(0);
+        algaeSubsystem.armSetSpeed(0);
     }
 }

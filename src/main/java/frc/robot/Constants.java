@@ -62,7 +62,7 @@ public final class Constants {
     public static final Matter CHASSIS =
             new Matter(new Translation3d(0, 0, Units.inchesToMeters(8)), ROBOT_MASS);
     public static final double LOOP_TIME = 0.13; // s, 20ms + 110ms sprk max velocity lag
-    public static final double MAX_SPEED = Units.feetToMeters(12.5);
+    public static final double MAX_SPEED = Units.feetToMeters(14.5);
     // Maximum speed of the robot in meters per second, used to limit acceleration.
 
     //  public static final class AutonConstants
@@ -158,8 +158,8 @@ public final class Constants {
     public static final class AlgaeConstants {
         // set ports
 
-        public static final int kAlgaeRightPort = 14; // currently as pivot
-        public static final int kAlgaeLeftPort = 15; // currently as intake
+        public static final int kAlgaeRightPort = 15; // currently as intake
+        public static final int kAlgaeLeftPort = 14; // currently as pivot
 
         // set speed?
         public static final double kShooterSpeed = 1.0;

@@ -33,12 +33,11 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     // Defaults
     private AlgaeScoringTarget scoringTarget = AlgaeScoringTarget.STOW_ALGAE;
-    private final double speedModifier = 0.0;
 
     public AlgaeSubsystem() {
 
-        motor1Config.inverted(false).idleMode(IdleMode.kCoast);
-        motor2Config.inverted(false).idleMode(IdleMode.kBrake);
+        motor1Config.inverted(false).idleMode(IdleMode.kBrake);
+        motor2Config.inverted(false).idleMode(IdleMode.kCoast);
         motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.1, 0.0, 0.0);
         m_motor1.configure(
                 motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

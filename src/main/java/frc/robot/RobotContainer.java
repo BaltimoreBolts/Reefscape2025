@@ -25,6 +25,8 @@ import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Axis;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlignToReefTagRelative;
+import frc.robot.commands.algae.AlgaeIntakeCommand;
+import frc.robot.commands.algae.AlgaePivotCommand;
 import frc.robot.commands.elevator.ElevatorSpeedCommand;
 import frc.robot.commands.elevator.ElevatorZeroPositionCommand;
 import frc.robot.commands.scoring.ScoreCommand;
@@ -34,7 +36,6 @@ import frc.robot.commands.scoring.ScoreL3Command;
 import frc.robot.commands.scoring.ScoreL4Command;
 import frc.robot.commands.scoring.ZeroCommand;
 // import frc.robot.commands.shooter.IntakeCommand;
-import frc.robot.commands.shooter.ShooterSpeedCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -220,21 +221,30 @@ public class RobotContainer {
                 .leftBumper()
                 .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
-        // Intake and outtake
         driverController
                 .rightTrigger()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.25))
-                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+                .onTrue(new AlgaeIntakeCommand(m_algaeSubsystem, -0.5))
+                .onFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
         driverController
-                .x()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.4))
-                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+                .rightTrigger()
+                .onTrue(new AlgaeIntakeCommand(m_algaeSubsystem, 0.5))
+                .onFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
 
-        // Adjust coral in end effector
-        driverController
-                .leftTrigger()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.2))
-                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        // // Intake and outtake
+        // driverController
+        //         .rightTrigger()
+        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.25))
+        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        // driverController
+        //         .x()
+        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.4))
+        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+
+        // // Adjust coral in end effector
+        // driverController
+        //         .leftTrigger()
+        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.2))
+        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 
         // TODO: want to change to driver and replace with current intake
         // Intake coral
@@ -253,6 +263,11 @@ public class RobotContainer {
         operatorRightStickY.whileTrue(new ElevatorSpeedCommand(
                 m_elevatorSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kRightY)));
 
+        var operatorLeftStickY = new Trigger(
+                () -> Math.abs(operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
+        operatorLeftStickY.whileTrue(new AlgaePivotCommand(
+                m_algaeSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kLeftY)));
+
         // Manual elevator positions
         new JoystickButton(
                         operatorController,
@@ -269,6 +284,11 @@ public class RobotContainer {
                 .whileTrue(new ScoreL2Command(m_elevatorSubsystem, m_shooterSubsystem));
         new JoystickButton(operatorController, ControllerConstants.Button.kX)
                 .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
+
+        new JoystickButton(operatorController, ControllerConstants.Button.kLeftTriggerButton)
+                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, 0.3));
+        new JoystickButton(operatorController, ControllerConstants.Button.kRightTriggerButton)
+                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, -0.3));
         // new JoystickButton(operatorController, ControllerConstants.Button.kY)
         //         .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
 
