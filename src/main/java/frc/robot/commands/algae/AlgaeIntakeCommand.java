@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.AlgaeSubsystem;
 
 public class AlgaeIntakeCommand extends Command {
-    private final AlgaeSubsystem algaeSubsystem; 
+    private final AlgaeSubsystem algaeSubsystem;
     private final double speed;
 
     /**

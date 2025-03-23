@@ -90,9 +90,11 @@ public class AlgaeSubsystem extends SubsystemBase {
     public void periodic() {
         // printTarget();
     }
+
     public void setSpeed(double speed) {
-        m_motor2.set(speed); 
+        m_motor2.set(speed);
     }
+
     public void armSetSpeed(double speed) {
         m_motor1.set(speed / (1.0 - ControllerConstants.kDeadzone));
     }
