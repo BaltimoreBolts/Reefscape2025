@@ -221,15 +221,6 @@ public class RobotContainer {
                 .leftBumper()
                 .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
-        driverController
-                .rightTrigger()
-                .onTrue(new AlgaeIntakeCommand(m_algaeSubsystem, -0.5))
-                .onFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
-        driverController
-                .rightTrigger()
-                .onTrue(new AlgaeIntakeCommand(m_algaeSubsystem, 0.5))
-                .onFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
-
         // // Intake and outtake
         // driverController
         //         .rightTrigger()
@@ -285,10 +276,13 @@ public class RobotContainer {
         new JoystickButton(operatorController, ControllerConstants.Button.kX)
                 .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
 
-        new JoystickButton(operatorController, ControllerConstants.Button.kLeftTriggerButton)
-                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, 0.3));
-        new JoystickButton(operatorController, ControllerConstants.Button.kRightTriggerButton)
-                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, -0.3));
+        new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
+                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, 0.5))
+                .whileFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
+        new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
+                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, -0.5))
+                .whileFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
+
         // new JoystickButton(operatorController, ControllerConstants.Button.kY)
         //         .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
 

@@ -67,6 +67,10 @@ public class AlgaeSubsystem extends SubsystemBase {
         m_piController1.setReference(targetState.getPosition(), ControlType.kPosition);
     }
 
+    public void printPosition() {
+        SmartDashboard.putNumber("getName()", getClosedLoopError());
+    }
+
     public void printSpeed() {
         SmartDashboard.putNumber("algaearm speed 1", m_motor1.getAppliedOutput());
     }
@@ -95,6 +99,6 @@ public class AlgaeSubsystem extends SubsystemBase {
     }
 
     public void armSetSpeed(double speed) {
-        m_motor1.set(speed / (1.0 - ControllerConstants.kDeadzone));
+        m_motor1.set(speed / (1.0 - ControllerConstants.kDeadzone) * 0.10);
     }
 }
