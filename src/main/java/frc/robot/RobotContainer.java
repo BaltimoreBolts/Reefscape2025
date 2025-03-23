@@ -220,14 +220,14 @@ public class RobotContainer {
                 .leftBumper()
                 .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
-        // Outtake and intake
-        driverController
-                .x()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.2))
-                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        // Intake and outtake
         driverController
                 .rightTrigger()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.5))
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.25))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        driverController
+                .x()
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.4))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 
         // Adjust coral in end effector

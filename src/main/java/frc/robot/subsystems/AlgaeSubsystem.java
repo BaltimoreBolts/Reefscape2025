@@ -15,11 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.AlgaeConstants.AlgaeScoringTarget;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ElevatorConstants.ElevatorState;
 
 public class AlgaeSubsystem extends SubsystemBase {
+    // Pivot
     private final SparkMax m_motor1 =
             new SparkMax(AlgaeConstants.kAlgaeLeftPort, MotorType.kBrushless);
+    // Intake
     private final SparkMax m_motor2 =
             new SparkMax(AlgaeConstants.kAlgaeRightPort, MotorType.kBrushless);
     private final RelativeEncoder m_encoder = m_motor1.getEncoder();
@@ -87,13 +90,10 @@ public class AlgaeSubsystem extends SubsystemBase {
     public void periodic() {
         // printTarget();
     }
-
     public void setSpeed(double speed) {
-        double speedToSet = speed + speedModifier;
-        if (speed == 0.0) {
-            speedToSet = 0.0;
-        }
-        m_motor1.set(speedToSet);
-        m_motor2.set(speedToSet);
+        m_motor2.set(speed); 
+    }
+    public void armSetSpeed(double speed) {
+        m_motor1.set(speed / (1.0 - ControllerConstants.kDeadzone));
     }
 }
