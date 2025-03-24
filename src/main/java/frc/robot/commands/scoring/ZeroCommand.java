@@ -11,7 +11,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class ZeroCommand extends SequentialCommandGroup {
     public ZeroCommand(ElevatorSubsystem elevatorSubsystem, ShooterSubsystem shooterSubsystem) {
         addCommands(new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.ZERO)
-                .alongWith(new StopShooterCommand(shooterSubsystem), Commands.print("scoring in L1"))
+                .alongWith(new StopShooterCommand(shooterSubsystem), Commands.print("going to zero"))
                 .withTimeout(1.0));
     }
 }

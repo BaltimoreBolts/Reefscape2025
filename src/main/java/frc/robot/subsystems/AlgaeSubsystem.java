@@ -15,11 +15,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.AlgaeConstants.AlgaeScoringTarget;
+import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ElevatorConstants.ElevatorState;
 
 public class AlgaeSubsystem extends SubsystemBase {
+    // Pivot
     private final SparkMax m_motor1 =
             new SparkMax(AlgaeConstants.kAlgaeLeftPort, MotorType.kBrushless);
+    // Intake
     private final SparkMax m_motor2 =
             new SparkMax(AlgaeConstants.kAlgaeRightPort, MotorType.kBrushless);
     private final RelativeEncoder m_encoder = m_motor1.getEncoder();
@@ -30,12 +33,11 @@ public class AlgaeSubsystem extends SubsystemBase {
 
     // Defaults
     private AlgaeScoringTarget scoringTarget = AlgaeScoringTarget.STOW_ALGAE;
-    private final double speedModifier = 0.0;
 
     public AlgaeSubsystem() {
 
-        motor1Config.inverted(false).idleMode(IdleMode.kCoast);
-        motor2Config.inverted(false).idleMode(IdleMode.kBrake);
+        motor1Config.inverted(false).idleMode(IdleMode.kBrake);
+        motor2Config.inverted(false).idleMode(IdleMode.kCoast);
         motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.1, 0.0, 0.0);
         m_motor1.configure(
                 motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
@@ -65,6 +67,10 @@ public class AlgaeSubsystem extends SubsystemBase {
         m_piController1.setReference(targetState.getPosition(), ControlType.kPosition);
     }
 
+    public void printPosition() {
+        SmartDashboard.putNumber("getName()", getClosedLoopError());
+    }
+
     public void printSpeed() {
         SmartDashboard.putNumber("algaearm speed 1", m_motor1.getAppliedOutput());
     }
@@ -89,11 +95,10 @@ public class AlgaeSubsystem extends SubsystemBase {
     }
 
     public void setSpeed(double speed) {
-        double speedToSet = speed + speedModifier;
-        if (speed == 0.0) {
-            speedToSet = 0.0;
-        }
-        m_motor1.set(speedToSet);
-        m_motor2.set(speedToSet);
+        m_motor2.set(speed);
+    }
+
+    public void armSetSpeed(double speed) {
+        m_motor1.set(speed / (1.0 - ControllerConstants.kDeadzone) * 0.10);
     }
 }
