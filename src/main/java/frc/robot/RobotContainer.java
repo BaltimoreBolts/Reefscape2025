@@ -277,10 +277,10 @@ public class RobotContainer {
                 .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
 
         new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
-                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, 0.5))
+                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, 0.65))
                 .whileFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
         new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
-                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, -0.5))
+                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, -0.65))
                 .whileFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
 
         // new JoystickButton(operatorController, ControllerConstants.Button.kY)
