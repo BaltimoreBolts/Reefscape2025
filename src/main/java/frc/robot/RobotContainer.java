@@ -35,6 +35,7 @@ import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
 import frc.robot.commands.scoring.ScoreL4Command;
 import frc.robot.commands.scoring.ZeroCommand;
+import frc.robot.commands.shooter.ShooterSpeedCommand;
 // import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
@@ -222,20 +223,20 @@ public class RobotContainer {
                 .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
         // // Intake and outtake
-        // driverController
-        //         .rightTrigger()
-        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.25))
-        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
-        // driverController
-        //         .x()
-        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.4))
-        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        driverController
+                .rightTrigger()
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.25))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        driverController
+                .x()
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.4))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 
-        // // Adjust coral in end effector
-        // driverController
-        //         .leftTrigger()
-        //         .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.2))
-        //         .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
+        // Adjust coral in end effector
+        driverController
+                .leftTrigger()
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.2))
+                .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 
         // TODO: want to change to driver and replace with current intake
         // Intake coral
@@ -251,8 +252,8 @@ public class RobotContainer {
         // Manual movement of the elevator
         var operatorRightStickY = new Trigger(() ->
                 Math.abs(operatorController.getRawAxis(Axis.kRightY)) > ControllerConstants.kDeadzone);
-        operatorRightStickY.whileTrue(new ElevatorSpeedCommand(
-                m_elevatorSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kRightY)));
+        // operatorRightStickY.whileTrue(new ElevatorSpeedCommand(
+        //         m_elevatorSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kRightY)));
 
         var operatorLeftStickY = new Trigger(
                 () -> Math.abs(operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);

@@ -83,13 +83,17 @@ public class ElevatorSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         m_State = m_profile.calculate(0.02, m_State, m_goal);
+        var feedforward = m_Feedforward.calculate(m_State.velocity);
         m_piController1.setReference(
                 m_State.position,
                 ControlType.kPosition,
                 ClosedLoopSlot.kSlot0,
-                m_Feedforward.calculate(m_State.velocity));
+                feedforward);
         printPosition();
         printSpeed();
+
+        SmartDashboard.putNumber("elevator profile position", m_State.position);
+        SmartDashboard.putNumber("elevator profile feedforwad", feedforward);
     }
 
     public void setSpeed(double speed) {
