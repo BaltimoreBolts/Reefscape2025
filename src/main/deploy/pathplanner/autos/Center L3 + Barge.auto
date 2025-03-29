@@ -1,0 +1,55 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "H"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "score L3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left to Center"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "take algae 1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "To Barge"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "score barge"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Barge to Algae Right"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

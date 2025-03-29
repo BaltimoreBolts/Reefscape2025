@@ -23,11 +23,13 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Axis;
+import frc.robot.Constants.ControllerConstants.DPad;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.algae.AlgaeIntakeCommand;
 import frc.robot.commands.algae.AlgaePivotCommand;
 import frc.robot.commands.elevator.ElevatorZeroPositionCommand;
+import frc.robot.commands.scoring.BargeCommand;
 import frc.robot.commands.scoring.ScoreCommand;
 import frc.robot.commands.scoring.ScoreL1Command;
 import frc.robot.commands.scoring.ScoreL2Command;
@@ -125,7 +127,9 @@ public class RobotContainer {
         NamedCommands.registerCommand("score L2", m_scoreL2Command);
         NamedCommands.registerCommand("score L3", m_scoreL3Command);
         NamedCommands.registerCommand("score L4", m_scoreL4Command);
-
+//      NamedCommands.registerCommand("take algae 1", m_takealgae1Command);
+//      NamedCommands.registerCommand("take algae 2", m_takealgae2Command);
+//      NamedCommands.registerCommand("score barge", m_bargeCommand);
         autoChooser = AutoBuilder.buildAutoChooser();
         SmartDashboard.putData("Auto Chooser", autoChooser);
     }
@@ -276,6 +280,8 @@ public class RobotContainer {
                 .whileTrue(new ScoreL2Command(m_elevatorSubsystem, m_shooterSubsystem));
         new JoystickButton(operatorController, ControllerConstants.Button.kX)
                 .whileTrue(new ScoreL3Command(m_elevatorSubsystem, m_shooterSubsystem));
+        new JoystickButton(operatorController, ControllerConstants.Button.kY)
+                .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
 
         new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
                 .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, 0.65))
@@ -284,8 +290,8 @@ public class RobotContainer {
                 .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, -0.65))
                 .whileFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
 
-        // new JoystickButton(operatorController, ControllerConstants.Button.kY)
-        //         .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
+        new Trigger(() -> operatorController.getPOV() == DPad.kUp)
+                .whileTrue(new BargeCommand(m_elevatorSubsystem, m_shooterSubsystem)); 
 
         // Set scoring target
         // new Trigger(() -> operatorController.getPOV() == DPad.kDown)

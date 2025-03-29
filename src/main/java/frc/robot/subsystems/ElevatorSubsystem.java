@@ -31,7 +31,7 @@ public class ElevatorSubsystem extends SubsystemBase {
             new TrapezoidProfile(new TrapezoidProfile.Constraints(40, 35));
     private TrapezoidProfile.State m_goal = new TrapezoidProfile.State();
     private TrapezoidProfile.State m_State = new TrapezoidProfile.State();
-    private final ElevatorFeedforward m_Feedforward = new ElevatorFeedforward(0, 0.2, 0.2);
+    private final ElevatorFeedforward m_Feedforward = new ElevatorFeedforward(0, 0.25, 0.25);
 
     SparkMaxConfig motor1Config = new SparkMaxConfig();
     SparkMaxConfig motor2Config = new SparkMaxConfig();
@@ -42,7 +42,7 @@ public class ElevatorSubsystem extends SubsystemBase {
 
         motor1Config.inverted(false).idleMode(IdleMode.kBrake);
         motor2Config.inverted(false).follow(ElevatorConstants.kElevatorLeft).idleMode(IdleMode.kBrake);
-        motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.06, 0, 0);
+        motor1Config.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.09, 0, 0);
 
         m_motor1.configure(
                 motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);

@@ -124,7 +124,8 @@ public final class Constants {
             SCORE_L1(20.0), // 10inch travel; put bottom edge of coral at 20in off ground
             SCORE_L2(29.0), // 20inch travel; put center of coral at 32in off ground
             SCORE_L3(49.0),
-            SCORE_L4(82.0);
+            SCORE_L4(82.0),
+            BARGE(85);
 
             final double position;
 
@@ -151,7 +152,8 @@ public final class Constants {
             L1,
             L2,
             L3,
-            L4
+            L4,
+            BARGE
         }
     }
 
