@@ -27,7 +27,6 @@ import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.AlignToReefTagRelative;
 import frc.robot.commands.algae.AlgaeIntakeCommand;
 import frc.robot.commands.algae.AlgaePivotCommand;
-import frc.robot.commands.elevator.ElevatorSpeedCommand;
 import frc.robot.commands.elevator.ElevatorZeroPositionCommand;
 import frc.robot.commands.scoring.ScoreCommand;
 import frc.robot.commands.scoring.ScoreL1Command;
@@ -250,8 +249,9 @@ public class RobotContainer {
          */
 
         // Manual movement of the elevator
-        var operatorRightStickY = new Trigger(() ->
-                Math.abs(operatorController.getRawAxis(Axis.kRightY)) > ControllerConstants.kDeadzone);
+        // var operatorRightStickY = new Trigger(() ->
+        //         Math.abs(operatorController.getRawAxis(Axis.kRightY)) >
+        // ControllerConstants.kDeadzone);
         // operatorRightStickY.whileTrue(new ElevatorSpeedCommand(
         //         m_elevatorSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kRightY)));
 
