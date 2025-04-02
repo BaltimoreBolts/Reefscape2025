@@ -15,14 +15,11 @@ import frc.robot.Constants.inputConstants.digitalInputConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
     private final SparkMax m_motor1 =
-            new SparkMax(ShooterConstants.kShooterLeftPort, MotorType.kBrushless);
-    private final SparkMax m_motor2 =
-            new SparkMax(ShooterConstants.kShooterRightPort, MotorType.kBrushless);
+            new SparkMax(ShooterConstants.kShooterPort, MotorType.kBrushless);
+
     private final DigitalInput m_firstSensor = new DigitalInput(digitalInputConstants.kFirstSensor);
-    private final DigitalInput m_secondSensor = new DigitalInput(digitalInputConstants.kSecondSensor);
 
     SparkBaseConfig motor1Config = new SparkMaxConfig();
-    SparkBaseConfig motor2Config = new SparkMaxConfig();
 
     // Defaults
     private final double speedModifier = 0.0;
@@ -31,21 +28,14 @@ public class ShooterSubsystem extends SubsystemBase {
     public ShooterSubsystem() {
 
         motor1Config.inverted(true).idleMode(IdleMode.kCoast);
-        motor2Config.inverted(false).idleMode(IdleMode.kCoast);
 
         m_motor1.configure(
                 motor1Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-        m_motor2.configure(
-                motor2Config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     // Methods for sensors
     public boolean getFirstDigitalInput() {
         return m_firstSensor.get();
-    }
-
-    public boolean getSecondDigitalInput() {
-        return m_secondSensor.get();
     }
 
     // Scoring target methods
@@ -71,6 +61,5 @@ public class ShooterSubsystem extends SubsystemBase {
             speedToSet = 0.0;
         }
         m_motor1.set(speedToSet);
-        m_motor2.set(speedToSet);
     }
 }

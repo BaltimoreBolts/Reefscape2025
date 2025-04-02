@@ -142,8 +142,7 @@ public final class Constants {
     public static final class ShooterConstants {
         // set ports
 
-        public static final int kShooterRightPort = 12;
-        public static final int kShooterLeftPort = 13;
+        public static final int kShooterPort = 13;
 
         // set speed?
         public static final double kShooterSpeed = 1.0;
@@ -160,8 +159,8 @@ public final class Constants {
     public static final class AlgaeConstants {
         // set ports
 
-        public static final int kAlgaeRightPort = 15; // currently as intake
-        public static final int kAlgaeLeftPort = 14; // currently as pivot
+        public static final int kAlgaeRollerPort = 12; // currently as intake
+        public static final int kAlgaePivotPort = 14; // currently as pivot
 
         // set speed?
         public static final double kShooterSpeed = 1.0;

@@ -21,10 +21,10 @@ import frc.robot.Constants.ElevatorConstants.ElevatorState;
 public class AlgaeSubsystem extends SubsystemBase {
     // Pivot
     private final SparkMax m_motor1 =
-            new SparkMax(AlgaeConstants.kAlgaeLeftPort, MotorType.kBrushless);
+            new SparkMax(AlgaeConstants.kAlgaePivotPort, MotorType.kBrushless);
     // Intake
     private final SparkMax m_motor2 =
-            new SparkMax(AlgaeConstants.kAlgaeRightPort, MotorType.kBrushless);
+            new SparkMax(AlgaeConstants.kAlgaeRollerPort, MotorType.kBrushless);
     private final RelativeEncoder m_encoder = m_motor1.getEncoder();
     private final SparkClosedLoopController m_piController1 = m_motor1.getClosedLoopController();
     SparkBaseConfig motor1Config = new SparkMaxConfig();

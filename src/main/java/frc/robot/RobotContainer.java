@@ -228,17 +228,17 @@ public class RobotContainer {
         // // Intake and outtake
         driverController
                 .rightTrigger()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.25))
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.35))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
         driverController
                 .x()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.4))
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.6))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 
         // Adjust coral in end effector
         driverController
                 .leftTrigger()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.2))
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.35))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 
         // TODO: want to change to driver and replace with current intake
@@ -262,7 +262,7 @@ public class RobotContainer {
         var operatorLeftStickY = new Trigger(
                 () -> Math.abs(operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
         operatorLeftStickY.whileTrue(new AlgaePivotCommand(
-                m_algaeSubsystem, () -> -1.0 * operatorController.getRawAxis(Axis.kLeftY)));
+                m_algaeSubsystem, () -> -1.0 * 0.5 * operatorController.getRawAxis(Axis.kLeftY)));
 
         // Manual elevator positions
         new JoystickButton(
