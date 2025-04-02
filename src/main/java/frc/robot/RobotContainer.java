@@ -12,20 +12,19 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.RobotBase;
-// import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-// import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Axis;
 import frc.robot.Constants.ControllerConstants.DPad;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.AlignToReefTagRelative;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.algae.AlgaeIntakeCommand;
 import frc.robot.commands.algae.AlgaePivotCommand;
 import frc.robot.commands.elevator.ElevatorZeroPositionCommand;
@@ -37,7 +36,6 @@ import frc.robot.commands.scoring.ScoreL3Command;
 import frc.robot.commands.scoring.ScoreL4Command;
 import frc.robot.commands.scoring.ZeroCommand;
 import frc.robot.commands.shooter.ShooterSpeedCommand;
-// import frc.robot.commands.shooter.IntakeCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -218,27 +216,27 @@ public class RobotContainer {
         //         .whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
 
         // Auto-aligns
-        driverController
-                .rightBumper()
-                .onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
-        driverController
-                .leftBumper()
-                .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
+        // driverController
+        //         .rightBumper()
+        //         .onTrue(new AlignToReefTagRelative(true, drivebase).withTimeout(7));
+        // driverController
+        //         .leftBumper()
+        //         .onTrue(new AlignToReefTagRelative(false, drivebase).withTimeout(7));
 
         // // Intake and outtake
         driverController
                 .rightTrigger()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.35))
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, ShooterConstants.kIntakeSpeed))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
         driverController
                 .x()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, -0.6))
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, ShooterConstants.kShooterSpeed))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 
         // Adjust coral in end effector
         driverController
                 .leftTrigger()
-                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, 0.35))
+                .whileTrue(new ShooterSpeedCommand(m_shooterSubsystem, ShooterConstants.kOutSpeed))
                 .whileFalse(new ShooterSpeedCommand(m_shooterSubsystem, 0));
 
         // TODO: want to change to driver and replace with current intake
@@ -284,10 +282,10 @@ public class RobotContainer {
                 .whileTrue(new ScoreL4Command(m_elevatorSubsystem, m_shooterSubsystem));
 
         new JoystickButton(operatorController, ControllerConstants.Button.kLeftBumper)
-                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, 0.65))
+                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, AlgaeConstants.kIntakeSpeed))
                 .whileFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
         new JoystickButton(operatorController, ControllerConstants.Button.kRightBumper)
-                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, -0.65))
+                .whileTrue(new AlgaeIntakeCommand(m_algaeSubsystem, AlgaeConstants.kOuttakeSpeed))
                 .whileFalse(new AlgaeIntakeCommand(m_algaeSubsystem, 0));
 
         new Trigger(() -> operatorController.getPOV() == DPad.kUp)

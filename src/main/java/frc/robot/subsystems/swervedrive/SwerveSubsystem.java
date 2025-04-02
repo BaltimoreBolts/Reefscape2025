@@ -17,8 +17,8 @@ import com.pathplanner.lib.path.PathPlannerPath;
 import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
+// import edu.wpi.first.apriltag.AprilTagFieldLayout;
+// import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -38,16 +38,13 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine.Config;
 import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
-import frc.robot.subsystems.swervedrive.Vision.Cameras;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 import org.json.simple.parser.ParseException;
-import org.photonvision.targeting.PhotonPipelineResult;
 import swervelib.SwerveController;
 import swervelib.SwerveDrive;
 import swervelib.SwerveDriveTest;
@@ -63,12 +60,12 @@ public class SwerveSubsystem extends SubsystemBase {
     /** Swerve drive object. */
     private final SwerveDrive swerveDrive;
     /** AprilTag field layout. */
-    private final AprilTagFieldLayout aprilTagFieldLayout =
-            AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+    // private final AprilTagFieldLayout aprilTagFieldLayout =
+            //AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
     /** Enable vision odometry updates while driving. */
     private final boolean visionDriveTest = false;
     /** PhotonVision class to keep an accurate odometry. */
-    private Vision vision;
+    
 
     private final Field2d m_field = new Field2d();
 
@@ -225,23 +222,7 @@ public class SwerveSubsystem extends SubsystemBase {
      *
      * @return A {@link Command} which will run the alignment.
      */
-    public Command aimAtTarget(Cameras camera) {
-
-        return run(() -> {
-            Optional<PhotonPipelineResult> resultO = camera.getBestResult();
-            if (resultO.isPresent()) {
-                var result = resultO.get();
-                if (result.hasTargets()) {
-                    drive(getTargetSpeeds(
-                            0,
-                            0,
-                            Rotation2d.fromDegrees(result
-                                    .getBestTarget()
-                                    .getYaw()))); // Not sure if this will work, more math may be required.
-                }
-            }
-        });
-    }
+    
 
     /**
      * Get the path follower with events.

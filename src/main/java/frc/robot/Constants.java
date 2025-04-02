@@ -106,14 +106,19 @@ public final class Constants {
         public static final int kElevatorRight = 11;
         public static final boolean kMotorInverted2 = true;
         public static final int kMinPosition = 0;
-        // public static final double kP = 6.8; // more p
-        // public static final double kI = 0.0; // 003;
-        // public static final double kIz = 0;
-        // public static final double kD = 6.0; // change as needed
-        // public static final double kFF = 0.07;
         public static final double kSpeedLimitFactor = 0.25;
         public static final double kToleranceRotations = 0.2;
         public static final double kArmSpeedModifier = 0.25;
+
+        // Trapezoidal, FF, PID
+        public static final double kMaxV = 40.0; 
+        public static final double kMaxA = 35.0; 
+        public static final double kS = 0.0; 
+        public static final double kG = 0.25; 
+        public static final double kV = 0.25; 
+        public static final double kP = 0.09; 
+        public static final double kI = 0.0; 
+        public static final double kD = 0.0; 
 
         public enum ElevatorState { // 2 enc values per inch
             ZERO(0.0),
@@ -144,8 +149,10 @@ public final class Constants {
 
         public static final int kShooterPort = 13;
 
-        // set speed?
-        public static final double kShooterSpeed = 1.0;
+        // set speed
+        public static final double kShooterSpeed = -0.6;
+        public static final double kIntakeSpeed = -0.35;
+        public static final double kOutSpeed = 0.35; 
 
         public enum ScoringTarget {
             L1,
@@ -162,8 +169,10 @@ public final class Constants {
         public static final int kAlgaeRollerPort = 12; // currently as intake
         public static final int kAlgaePivotPort = 14; // currently as pivot
 
-        // set speed?
-        public static final double kShooterSpeed = 1.0;
+        // set speed
+        public static final double kIntakeSpeed = 0.65;
+        public static final double kOuttakeSpeed = -0.65; 
+
 
         public enum AlgaeScoringTarget {
             INTAKE_ALGAE,
