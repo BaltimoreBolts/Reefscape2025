@@ -4,7 +4,6 @@
 
 package frc.robot;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
@@ -28,7 +27,7 @@ public class Robot extends TimedRobot {
 
     public Robot() {
         instance = this;
-        //CameraServer.startAutomaticCapture();
+        // CameraServer.startAutomaticCapture();
     }
 
     public static Robot getInstance() {
@@ -77,13 +76,13 @@ public class Robot extends TimedRobot {
         m_robotContainer.setMotorBrake(true);
         disabledTimer.reset();
         disabledTimer.start();
-
     }
 
     @Override
     public void disabledPeriodic() {
         if (disabledTimer.hasElapsed(Constants.DrivebaseConstants.WHEEL_LOCK_TIME)) {
             m_robotContainer.setMotorBrake(false);
+            m_robotContainer.zeroElevator();
             disabledTimer.stop();
             disabledTimer.reset();
         }

@@ -23,13 +23,13 @@ import frc.robot.Constants.AlgaeConstants;
 import frc.robot.Constants.ControllerConstants;
 import frc.robot.Constants.ControllerConstants.Axis;
 import frc.robot.Constants.ControllerConstants.DPad;
+import frc.robot.Constants.ElevatorConstants.ElevatorState;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.algae.AlgaeIntakeCommand;
 import frc.robot.commands.algae.AlgaePivotCommand;
 import frc.robot.commands.elevator.ElevatorZeroPositionCommand;
 import frc.robot.commands.scoring.BargeCommand;
-import frc.robot.commands.scoring.ScoreCommand;
 import frc.robot.commands.scoring.ScoreL1Command;
 import frc.robot.commands.scoring.ScoreL2Command;
 import frc.robot.commands.scoring.ScoreL3Command;
@@ -195,7 +195,7 @@ public class RobotContainer {
          */
 
         // Scores score state set by operator
-        driverController.a().onTrue(new ScoreCommand(m_elevatorSubsystem, m_shooterSubsystem));
+        // driverController.a().onTrue(new ScoreCommand(m_elevatorSubsystem, m_shooterSubsystem));
 
         // Zero gyro
         driverController.povLeft().and(isTest.negate()).onTrue((Commands.runOnce(drivebase::zeroGyro)));
@@ -260,7 +260,7 @@ public class RobotContainer {
         var operatorLeftStickY = new Trigger(
                 () -> Math.abs(operatorController.getRawAxis(Axis.kLeftY)) > ControllerConstants.kDeadzone);
         operatorLeftStickY.whileTrue(new AlgaePivotCommand(
-                m_algaeSubsystem, () -> -1.0 * 0.5 * operatorController.getRawAxis(Axis.kLeftY)));
+                m_algaeSubsystem, () -> 1.0 * 0.3 * operatorController.getRawAxis(Axis.kLeftY)));
 
         // Manual elevator positions
         new JoystickButton(
@@ -314,5 +314,10 @@ public class RobotContainer {
 
     public void setMotorBrake(boolean brake) {
         drivebase.setMotorBrake(brake);
+    }
+
+    public void zeroElevator() {
+        m_elevatorSubsystem.setPosition(ElevatorState.ZERO);
+        m_elevatorSubsystem.zeroEncoders();
     }
 }

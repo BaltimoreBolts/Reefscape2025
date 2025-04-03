@@ -61,12 +61,10 @@ public class SwerveSubsystem extends SubsystemBase {
     private final SwerveDrive swerveDrive;
     /** AprilTag field layout. */
     // private final AprilTagFieldLayout aprilTagFieldLayout =
-            //AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
+    // AprilTagFieldLayout.loadField(AprilTagFields.k2025ReefscapeAndyMark);
     /** Enable vision odometry updates while driving. */
     private final boolean visionDriveTest = false;
     /** PhotonVision class to keep an accurate odometry. */
-    
-
     private final Field2d m_field = new Field2d();
 
     /**
@@ -222,7 +220,6 @@ public class SwerveSubsystem extends SubsystemBase {
      *
      * @return A {@link Command} which will run the alignment.
      */
-    
 
     /**
      * Get the path follower with events.
