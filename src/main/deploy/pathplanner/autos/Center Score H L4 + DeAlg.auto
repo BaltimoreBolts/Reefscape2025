@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "H"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "score L4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 4.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left to Center"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "take algae 1"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
