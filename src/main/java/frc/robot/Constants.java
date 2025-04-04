@@ -123,14 +123,13 @@ public final class Constants {
         public enum ElevatorState { // 2 enc values per inch
             ZERO(0.0),
             RESTING(1.0),
-            // TODO: maybe add new constant or rename to be more general
             INTAKE_ALGAE(4.0), // lazy add to elevator
             STOW_ALGAE(0.0), // lazy add to elevator
             SCORE_L1(20.0), // 10inch travel; put bottom edge of coral at 20in off ground
             SCORE_L2(29.0), // 20inch travel; put center of coral at 32in off ground
             SCORE_L3(49.0),
             SCORE_L4(82.0),
-            BARGE(85);
+            BARGE(86.5);
 
             final double position;
 
@@ -150,9 +149,9 @@ public final class Constants {
         public static final int kShooterPort = 13;
 
         // set speed
-        public static final double kShooterSpeed = -0.6;
-        public static final double kIntakeSpeed = -0.4;
-        public static final double kOutSpeed = 0.4;
+        public static final double kShooterSpeed = -0.65;
+        public static final double kIntakeSpeed = -0.45;
+        public static final double kOutSpeed = 0.45;
 
         public enum ScoringTarget {
             L1,
@@ -170,7 +169,7 @@ public final class Constants {
         public static final int kAlgaePivotPort = 14; // currently as pivot
 
         // set speed
-        public static final double kIntakeSpeed = 0.65;
+        public static final double kIntakeSpeed = 0.55;
         public static final double kOuttakeSpeed = -0.65;
 
         public enum AlgaeScoringTarget {
