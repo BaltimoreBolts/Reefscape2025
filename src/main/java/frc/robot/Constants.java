@@ -169,8 +169,8 @@ public final class Constants {
         public static final int kAlgaePivotPort = 14; // currently as pivot
 
         // set speed
-        public static final double kIntakeSpeed = 0.55;
-        public static final double kOuttakeSpeed = -0.65;
+        public static final double kIntakeSpeed = 0.75;
+        public static final double kOuttakeSpeed = -0.80;
 
         public enum AlgaeScoringTarget {
             INTAKE_ALGAE,
