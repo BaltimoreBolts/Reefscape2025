@@ -13,9 +13,14 @@ public class AutoL3Command extends SequentialCommandGroup {
     public AutoL3Command(ElevatorSubsystem elevatorSubsystem, ShooterSubsystem shooterSubsystem) {
         addCommands(
                 new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.SCORE_L3)
-                        .alongWith(new StopShooterCommand(shooterSubsystem), Commands.print("scoring in L3"))
+                        .withTimeout(3.0),
+                new StopShooterCommand(shooterSubsystem)
+                        .withTimeout(1.0),
+                Commands.print("scoring in L3"),
+                new ShooterSpeedCommand(shooterSubsystem, -0.3)
+                        .withTimeout(2.0),
+                new StopShooterCommand(shooterSubsystem)
                         .withTimeout(5.0),
-                new ShooterSpeedCommand(shooterSubsystem, 0.3).withTimeout(5.0),
                 new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.ZERO));
     }
 }

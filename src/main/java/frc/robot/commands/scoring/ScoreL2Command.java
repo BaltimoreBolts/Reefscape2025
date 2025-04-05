@@ -12,9 +12,5 @@ public class ScoreL2Command extends SequentialCommandGroup {
     public ScoreL2Command(ElevatorSubsystem elevatorSubsystem, ShooterSubsystem shooterSubsystem) {
         addCommands(new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.SCORE_L2)
                 .alongWith(new StopShooterCommand(shooterSubsystem), Commands.print("scoring in L2")));
-        // .withTimeout(5.0)
-        // .andThen(new ShooterSpeedCommand(shooterSubsystem, -0.3))
-        // .withTimeout(1.0)
-        // .andThen(new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.ZERO)));
     }
 }
