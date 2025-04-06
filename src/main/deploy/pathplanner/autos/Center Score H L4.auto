@@ -27,6 +27,12 @@
           "data": {
             "pathName": "H Last Bit"
           }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "shoot coral"
+          }
         }
       ]
     }

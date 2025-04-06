@@ -38,6 +38,7 @@ import frc.robot.commands.scoring.ZeroCommand;
 import frc.robot.commands.shooter.ShooterSpeedCommand;
 import frc.robot.commands.swervedrive.auto.AutoL3Command;
 import frc.robot.commands.swervedrive.auto.AutoL4Command;
+import frc.robot.commands.swervedrive.auto.autoShootCommand;
 import frc.robot.subsystems.AlgaeSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
@@ -66,6 +67,7 @@ public class RobotContainer {
             new AutoL3Command(m_elevatorSubsystem, m_shooterSubsystem);
     private AutoL4Command m_autoL4Command =
             new AutoL4Command(m_elevatorSubsystem, m_shooterSubsystem);
+    private autoShootCommand m_AutoShootCommand = new autoShootCommand(m_elevatorSubsystem, m_shooterSubsystem);
     private final SendableChooser<Command> autoChooser;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
@@ -127,6 +129,7 @@ public class RobotContainer {
         NamedCommands.registerCommand("score L2", m_scoreL2Command);
         NamedCommands.registerCommand("score L3", m_autoL3Command);
         NamedCommands.registerCommand("score L4", m_autoL4Command);
+        NamedCommands.registerCommand("shoot coral", m_AutoShootCommand);
         //      NamedCommands.registerCommand("take algae 1", m_takealgae1Command);
         //      NamedCommands.registerCommand("take algae 2", m_takealgae2Command);
         //      NamedCommands.registerCommand("score barge", m_bargeCommand);

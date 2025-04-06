@@ -12,11 +12,12 @@ import frc.robot.subsystems.ShooterSubsystem;
 public class AutoL4Command extends SequentialCommandGroup {
     public AutoL4Command(ElevatorSubsystem elevatorSubsystem, ShooterSubsystem shooterSubsystem) {
         addCommands(
-                new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.SCORE_L4)
-                        .andThen(new StopShooterCommand(shooterSubsystem))
-                        .withTimeout(5.0),
-                Commands.print("scoring in L4"),
-                new ShooterSpeedCommand(shooterSubsystem, 0.3).withTimeout(5.0),
-                new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.ZERO));
+                new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.SCORE_L4).withTimeout(3.0),
+                new StopShooterCommand(shooterSubsystem).withTimeout(1.0),
+                Commands.print("scoring in L4")//,
+                // new ShooterSpeedCommand(shooterSubsystem, -0.3).withTimeout(2.0),
+                // new StopShooterCommand(shooterSubsystem).withTimeout(5.0) // ,
+                // new ElevatorPositionCommand(elevatorSubsystem, ElevatorState.ZERO));
+                );
     }
 }
