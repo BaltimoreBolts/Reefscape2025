@@ -67,7 +67,8 @@ public class RobotContainer {
             new AutoL3Command(m_elevatorSubsystem, m_shooterSubsystem);
     private AutoL4Command m_autoL4Command =
             new AutoL4Command(m_elevatorSubsystem, m_shooterSubsystem);
-    private autoShootCommand m_AutoShootCommand = new autoShootCommand(m_elevatorSubsystem, m_shooterSubsystem);
+    private autoShootCommand m_AutoShootCommand =
+            new autoShootCommand(m_elevatorSubsystem, m_shooterSubsystem);
     private final SendableChooser<Command> autoChooser;
 
     // Replace with CommandPS4Controller or CommandJoystick if needed

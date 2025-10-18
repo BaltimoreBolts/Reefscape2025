@@ -1,23 +1,14 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
-import com.revrobotics.spark.config.SparkMaxConfig;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ShooterConstants;
 import frc.robot.Constants.ShooterConstants.ScoringTarget;
-import frc.robot.Constants.inputConstants.digitalInputConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
     // private final SparkMax m_motor1 =
     //         new SparkMax(ShooterConstants.kShooterPort, MotorType.kBrushless);
 
-    // private final DigitalInput m_firstSensor = new DigitalInput(digitalInputConstants.kFirstSensor);
+    // private final DigitalInput m_firstSensor = new
+    // DigitalInput(digitalInputConstants.kFirstSensor);
 
     // SparkBaseConfig motor1Config = new SparkMaxConfig();
 
